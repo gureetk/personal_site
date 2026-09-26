@@ -1,0 +1,39 @@
+# Caddy serves the site with automatic HTTPS (Let's Encrypt or ZeroSSL).
+# 1. Point your domain's A/AAAA records at the server.
+# 2. Copy the site to /srv/site (or change `root` below).
+# 3. Then: sudo caddy run --config /etc/caddy/Caddyfile
+
+(security_headers) {
+	header {
+		Content-Security-Policy "default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; upgrade-insecure-requests"
+		Strict-Transport-Security "max-age=63072000; includeSubDomains"
+		X-Content-Type-Options "nosniff"
+		Referrer-Policy "no-referrer"
+		Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=(), usb=(), browsing-topics=()"
+		Cross-Origin-Opener-Policy "same-origin"
+		Cross-Origin-Resource-Policy "same-origin"
+		X-Frame-Options "DENY"
+		-Server
+	}
+}
+
+example.com {
+	root * /srv/site
+	encode zstd gzip
+	import security_headers
+
+	@fonts path /assets/fonts/*
+	header @fonts Cache-Control "public, max-age=31536000, immutable"
+
+	file_server
+
+	handle_errors {
+		@notfound expression {err.status_code} == 404
+		rewrite @notfound /404.html
+		file_server
+	}
+}
+
+www.example.com {
+	redir https://example.com{uri} permanent
+}
