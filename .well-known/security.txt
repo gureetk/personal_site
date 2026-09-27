@@ -1,7 +1,7 @@
 # Found a security problem with this site? Thank you. Please email me.
 # Format: RFC 9116 (https://www.rfc-editor.org/rfc/rfc9116)
 
-Contact: mailto:you@example.com
+Contact: mailto:hello@gureet.ca
 Expires: 2027-09-26T00:00:00.000Z
 Preferred-Languages: en
 Canonical: https://example.com/.well-known/security.txt

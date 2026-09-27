@@ -41,7 +41,7 @@ Opening `index.html` straight from disk mostly works, but some browsers block fo
 
 Codeberg Pages also reads `_headers`, but only accepts certain headers. As of August 2026 the list covers Content-Security-Policy, Permissions-Policy, Referrer-Policy and X-Frame-Options. If a deploy complains, trim `_headers` down to those. Details are at [docs.codeberg.org/codeberg-pages](https://docs.codeberg.org/codeberg-pages/).
 
-**GitHub Pages.** Create a repository named `yourname.github.io` and push these files. Then go to Settings → Pages and pick "Deploy from a branch" with `main` and `/ (root)`. The `.nojekyll` file makes sure `.well-known/` gets published. GitHub Pages can't send custom headers, so the Content Security Policy comes from the `<meta>` tag in the HTML.
+**GitHub Pages.** Create a repository named `gureett.github.io` and push these files. Then go to Settings → Pages and pick "Deploy from a branch" with `main` and `/ (root)`. The `.nojekyll` file makes sure `.well-known/` gets published. GitHub Pages can't send custom headers, so the Content Security Policy comes from the `<meta>` tag in the HTML.
 
 **Cloudflare Pages or Netlify.** Both read `_headers`, so you get the full header set, including HSTS and `frame-ancestors`. There's no build command, and the output directory is the repository root.
 
