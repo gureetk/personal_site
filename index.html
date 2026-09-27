@@ -21,6 +21,7 @@
 <link rel="preload" href="assets/fonts/atkinson-hyperlegible-mono-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="assets/css/site.css">
 <script src="assets/js/theme-init.js"></script>
+<script src="assets/js/site.js" defer></script>
 </head>
 <body>
 <a class="skip" href="#name">Skip to content</a>
@@ -42,6 +43,7 @@
       <a href="#see-also">SEE ALSO</a>
       <a href="#bugs">BUGS</a>
     </nav>
+    <button class="theme-toggle" id="theme-toggle" type="button" data-theme-toggle hidden>theme</button>
   </div>
 
   <main class="man" id="main">
@@ -176,5 +178,45 @@
   </footer>
 </div>
 
+<button class="prompt" id="prompt" type="button" data-page="yourname(8)" data-handle="yourname" aria-label="Keyboard shortcuts and sections" hidden><span id="prompt-text" aria-hidden="true">Manual page yourname(8) line 1 (press h for help or q to quit)</span></button>
+<p class="sr-only" id="announce" aria-live="polite"></p>
+
+<dialog class="help" id="help" aria-labelledby="help-title">
+  <div class="help-head">
+    <h2 id="help-title">SUMMARY OF LESS COMMANDS</h2>
+    <button class="help-close" type="button" data-close aria-label="Close">q</button>
+  </div>
+  <p class="help-note">Well, the ones this page understands.</p>
+  <table class="keys">
+    <tbody>
+      <tr><th scope="row">h&nbsp; ?</th><td>Display this help.</td></tr>
+      <tr><th scope="row">q</th><td>Exit. (It's a website, so this one is mostly symbolic.)</td></tr>
+      <tr><th scope="row">j&nbsp; e</th><td>Forward one line.</td></tr>
+      <tr><th scope="row">k&nbsp; y</th><td>Backward one line.</td></tr>
+      <tr><th scope="row">f&nbsp; SPACE</th><td>Forward one window.</td></tr>
+      <tr><th scope="row">b</th><td>Backward one window.</td></tr>
+      <tr><th scope="row">d&nbsp; u</th><td>Forward or backward half a window.</td></tr>
+      <tr><th scope="row">g&nbsp; &lt;</th><td>Go to the first line.</td></tr>
+      <tr><th scope="row">G&nbsp; &gt;</th><td>Go to the last line.</td></tr>
+      <tr><th scope="row">n&nbsp; N</th><td>Next or previous section.</td></tr>
+      <tr><th scope="row">t</th><td>Switch between light and dark.</td></tr>
+    </tbody>
+  </table>
+  <h3 class="help-sub">SECTIONS</h3>
+  <nav class="help-toc" aria-label="Sections">
+    <a href="#name">NAME</a>
+    <a href="#synopsis">SYNOPSIS</a>
+    <a href="#description">DESCRIPTION</a>
+    <a href="#options">OPTIONS</a>
+    <a href="#files">FILES</a>
+    <a href="#see-also">SEE ALSO</a>
+    <a href="#bugs">BUGS</a>
+    <a href="#author">AUTHOR</a>
+  </nav>
+  <div class="help-opts">
+    <label class="check" for="opt-keys"><input type="checkbox" id="opt-keys" checked> single-key shortcuts</label>
+    <button class="theme-toggle" id="theme-toggle-help" type="button" data-theme-toggle>theme</button>
+  </div>
+</dialog>
 </body>
 </html>
