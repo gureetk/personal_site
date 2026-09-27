@@ -249,7 +249,20 @@
             <dd>
               <p>A marketplace for buying and selling German cars, built by a team of four. Listings with up to seven photos, search filters for vehicle specs, bookmarks, and direct messages between buyers and sellers, plus accounts with email password resets. A React single-page app on a PHP and MySQL back end.</p>
               <p><b>My part:</b> user authentication and profile management.</p>
+              <ul class="did">
+                <li>Passwords hashed with bcrypt, and a fresh session ID at every login.</li>
+                <li>Password resets with single-use 256-bit codes that are stored hashed, expire after an hour, and never reveal whether an email has an account.</li>
+                <li>Profile pictures checked by their contents rather than their names, with SVGs refused. I tested it with a disguised PHP script, a PNG named <code>shell.php</code> and an SVG hiding a script; all three were rejected.</li>
+                <li>Prepared statements for every query in the user and reset code, and profile edits that can only touch the signed-in user's own account.</li>
+              </ul>
               <p class="meta"><span>react · php · mysql · team of 4</span><span class="plinks"><a href="https://github.com/arkelziko/fast-fahr">source</a><a href="https://youtu.be/W8mkPZq8NsY">demo video</a></span></p>
+            </dd>
+          </div>
+          <div class="opt">
+            <dt><a href="https://codeberg.org/wingback/wglink">wglink</a><span class="tag">in progress</span></dt>
+            <dd>
+              <p>A lightweight Go command-line tool with a terminal UI for creating, linking and managing WireGuard tunnels between machines on a LAN, so nothing else on the network can read the traffic between them. Built for LANs, though it can work across the internet too.</p>
+              <p class="meta"><span>go · wireguard · cli + tui</span><span class="plinks"><a href="https://codeberg.org/wingback/wglink">source</a></span></p>
             </dd>
           </div>
         </dl>

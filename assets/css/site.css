@@ -444,6 +444,33 @@ a:hover { text-decoration-thickness: 2px; }
 
 .plinks { display: flex; gap: 1rem; }
 
+/* What I built, inside a team project */
+.did {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  max-width: 38rem;
+  margin: 0;
+  padding-left: 1.1rem;
+  font-size: 0.9375rem;
+  line-height: 1.55;
+}
+
+.did li::marker { color: var(--faint); }
+
+/* Status label next to a project name, e.g. "in progress" */
+.tag {
+  display: inline-block;
+  margin-left: 0.65rem;
+  padding: 0.05rem 0.4rem;
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  font: 400 0.6875rem/1.5 var(--font-mono);
+  letter-spacing: 0.04em;
+  color: var(--amber);
+  vertical-align: 0.12em;
+}
+
 .more { font-size: 0.9375rem; color: var(--muted); }
 
 /* HISTORY */
