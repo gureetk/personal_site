@@ -68,7 +68,7 @@
   --font-body: "Atkinson Hyperlegible Next", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
 
   --gutter: clamp(16px, 5.5vw, 96px);
-  --frame: 100vw;
+  --frame: 1440px;    /* wider screens center this frame; the background still fills them */
   --indent: 3.6rem;   /* man(1) indents section bodies by 7 columns */
   --indent-2: 2.6rem;
 
