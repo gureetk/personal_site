@@ -2,7 +2,9 @@
    drifting through it, and a lens that follows the cursor and "decrypts" the
    plaintext hidden underneath.
 
-   When the cursor leaves or rests for a while, the lens wanders on its own.
+   The field is an endless strip that scrolls with the page at SCROLL_SPEED, so
+   scrolling under a resting cursor slides new plaintext into the lens. When the
+   cursor leaves or rests for a while, the lens wanders on its own.
 
    Edit PHRASES to change what people find. Keep them short and lowercase. */
 (() => {
@@ -57,7 +59,7 @@
 
   /** How fast the field scrolls compared with the page: 0 keeps it still,
       1 moves it with the text. Below 1 it reads as sitting behind the page. */
-  const SCROLL_SPEED = 0;
+  const SCROLL_SPEED = 0.5;
 
   const canvas = document.getElementById("cipher");
   if (!canvas || !canvas.getContext) return;
