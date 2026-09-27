@@ -44,7 +44,12 @@
     "you do not have a valid subscription",
     "self-host all the things",
     "wireguard all the things",
+    "uci commit && reboot",
+    "the pi breaks the tie",
     "passkeys, not passwords",
+    "degoogled: photos, drive, search, push",
+    "tailnet lock: enabled",
+    "homelab v3, now with quorum",
     "sudo dnf upgrade --refresh",
     "offline first",
   ];

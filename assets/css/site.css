@@ -483,6 +483,76 @@ a:hover { text-decoration-thickness: 2px; }
 
 .colophon { color: var(--muted); font-size: 0.9375rem; }
 
+/* ENVIRONMENT: the homelab */
+.lede { max-width: 38rem; }
+
+.diagram {
+  max-width: 100%;
+  margin: 0.35rem 0 0.2rem;
+  overflow-x: auto;
+}
+
+.diagram pre {
+  margin: 0;
+  font: 400 0.8125rem/1.3 var(--font-mono);
+  color: var(--text);
+}
+
+/* Two drawings of the same diagram: side arrows need room, so phones get a stacked one. */
+.diagram pre[data-diagram="narrow"] { display: none; }
+
+@media (max-width: 799px) {
+  .diagram pre[data-diagram="wide"] { display: none; }
+  .diagram pre[data-diagram="narrow"] { display: block; }
+}
+
+.dg-frame { color: var(--faint); }
+.dg-box { color: var(--amber); font-weight: 700; }
+.dg-key { color: var(--ink); }
+.dg-wire { color: var(--green); }
+
+.diagram figcaption {
+  margin-top: 0.55rem;
+  font: 400 0.75rem/1.5 var(--font-mono);
+  color: var(--muted);
+}
+
+.svc {
+  width: 100%;
+  max-width: 40rem;
+  margin-top: 0.4rem;
+  border-collapse: collapse;
+  font: 400 0.875rem/1.5 var(--font-mono);
+}
+
+.svc caption {
+  padding-bottom: 0.5rem;
+  text-align: left;
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
+.svc th {
+  padding: 0 1.5rem 0.35rem 0;
+  border-bottom: 1px solid var(--rule);
+  text-align: left;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+}
+
+.svc td {
+  padding: 0.3rem 1.5rem 0.3rem 0;
+  vertical-align: top;
+}
+
+.svc th:last-child,
+.svc td:last-child { padding-right: 0; }
+
+.svc td:first-child { color: var(--ink); white-space: nowrap; }
+.svc td:nth-child(2) { color: var(--muted); }
+
 /* ── Pager prompt (less-style, reverse video) ─────────────── */
 .prompt {
   position: fixed;
@@ -622,6 +692,33 @@ a:hover { text-decoration-thickness: 2px; }
   .files dd { margin-left: 1rem; }
 
   .keys th { width: 6.5rem; padding-right: 0.75rem; }
+
+  .diagram pre { font-size: 0.6875rem; }
+
+  /* The services table becomes a list: name and type, then what it's for. */
+  .svc,
+  .svc tbody,
+  .svc caption { display: block; }
+
+  .svc thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+  }
+
+  .svc tr {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 0.1rem 1rem;
+    padding: 0.45rem 0;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .svc td { padding: 0; }
+  .svc td:nth-child(2) { text-align: right; }
+  .svc td:last-child { grid-column: 1 / -1; color: var(--muted); }
 
   .help { padding: 1rem 1.1rem 1.2rem; }
 }

@@ -41,6 +41,7 @@
       <a href="#synopsis">SYNOPSIS</a>
       <a href="#description">DESCRIPTION</a>
       <a href="#options">OPTIONS</a>
+      <a href="#environment">ENVIRONMENT</a>
       <a href="#files">FILES</a>
       <a href="#see-also">SEE ALSO</a>
       <a href="#bugs">BUGS</a>
@@ -78,7 +79,7 @@
     <section class="sh" id="description" aria-labelledby="h-description">
       <h2 id="h-description">DESCRIPTION</h2>
       <div class="sh-body prose">
-        <p><b>yourname</b> studies computer science at McMaster University and is most at home in the layers people rarely see: operating systems, networks, and the infrastructure everything else runs on. That interest started in 2022 with a Raspberry Pi running two services, and the homelab is now on its third version. The plan is a career in security or infrastructure, ideally where the two meet, with plenty of curiosity left over for the rest of the field.</p>
+        <p><b>yourname</b> studies computer science at McMaster University and is most at home in the layers people rarely see: operating systems, networks, and the infrastructure everything else runs on. That interest started in 2022 with a Raspberry Pi running two services, and the homelab is now on its third version (see <a href="#environment">ENVIRONMENT</a>). The plan is a career in security or infrastructure, ideally where the two meet, with plenty of curiosity left over for the rest of the field.</p>
         <p><b>yourname</b> daily-drives Fedora Linux and GrapheneOS and lives as de-Googled a life as possible: free and open-source software first, offline tools where the task allows, and self-hosted services for the rest. The software people depend on should be free to read, change and share.</p>
       </div>
     </section>
@@ -93,7 +94,7 @@
           </div>
           <div class="opt" id="opt-infrastructure">
             <dt>--infrastructure</dt>
-            <dd>Linux, networking, virtualization, and the plumbing that keeps services up: reverse proxies, DNS, monitoring and backups. Most of it learned by running a homelab.</dd>
+            <dd>Linux, networking, virtualization, and the plumbing that keeps services up: reverse proxies, DNS, monitoring and backups. Most of it learned by running a homelab; see <a href="#environment">ENVIRONMENT</a>.</dd>
           </div>
           <div class="opt" id="opt-free-software">
             <dt>--free-software</dt>
@@ -104,6 +105,120 @@
             <dd>Collect less and encrypt the rest. A de-Googled phone on GrapheneOS, self-hosted services instead of rented ones, and a threat model for everything else.</dd>
           </div>
         </dl>
+      </div>
+    </section>
+
+    <!-- ENVIRONMENT: the homelab. Say what runs and why; leave out IPs, hostnames,
+         versions and which services are reachable from the internet. -->
+    <section class="sh" id="environment" aria-labelledby="h-environment">
+      <h2 id="h-environment">ENVIRONMENT</h2>
+      <div class="sh-body">
+        <p class="lede"><b>yourname</b> runs in a homelab, now on its third version. The rule is to self-host everything possible, to stay in control of personal data and secure as much as possible locally.</p>
+        <figure class="diagram">
+<pre data-diagram="wide" role="img" aria-label="Three ways into the homelab. From the internet, a select few services go through a VPS, where HAProxy passes TLS through without decrypting it and a CrowdSec bouncer blocks attackers, then over WireGuard to Caddy. At home, trusted devices reach Caddy directly through split-horizon DNS. Remote devices come in over Tailscale, with Tailnet Lock on, through a separate container that hands traffic to Caddy. Caddy ends TLS while CrowdSec reads its logs. Traffic continues over WireGuard to the services.">                                  <span class="dg-box">internet</span>
+                                      <span class="dg-frame">|</span>
+                                      <span class="dg-frame">v</span>
+                <span class="dg-frame">+--</span> <span class="dg-box">vps</span> <span class="dg-frame">-----------------------------------+</span>
+                <span class="dg-frame">|</span>  <span class="dg-key">haproxy</span>    passes TLS through unopened  <span class="dg-frame">|</span>
+                <span class="dg-frame">|</span>  <span class="dg-key">crowdsec</span>   bouncer: blocks at the edge  <span class="dg-frame">|</span>
+                <span class="dg-frame">+---------------------+--------------------+</span>
+                                      <span class="dg-frame">|</span>
+                                      <span class="dg-frame">|</span>  <span class="dg-wire">wireguard</span>
+                                      <span class="dg-frame">v</span>
+ <span class="dg-box">trusted lan</span>    <span class="dg-frame">+--</span> <span class="dg-box">homelab</span> <span class="dg-frame">-------------------------------+</span>
+ <span class="dg-frame">--------------&gt;|</span>  <span class="dg-key">caddy</span>      reverse proxy, ends TLS      <span class="dg-frame">|</span>
+ <span class="dg-wire">split-horizon</span>  <span class="dg-frame">|</span>  <span class="dg-key">crowdsec</span>   reads caddy's logs           <span class="dg-frame">|</span>  <span class="dg-box">tailnet</span>
+ <span class="dg-wire">dns</span>            <span class="dg-frame">|</span>  <span class="dg-key">tailscale</span>  own LXC <span class="dg-frame">-&gt;</span> caddy             <span class="dg-frame">|&lt;----------</span>
+                <span class="dg-frame">+---------------------+--------------------+</span> <span class="dg-wire">tailnet lock</span>
+                                      <span class="dg-frame">|</span>
+                                      <span class="dg-frame">|</span>  <span class="dg-wire">wireguard</span>
+                                      <span class="dg-frame">v</span>
+                immich · opencloud · vaultwarden · jellyfin
+                searxng · frigate · ntfy · pocket-id · stirling-pdf · ...</pre>
+<pre data-diagram="narrow" role="img" aria-label="Three ways into the homelab. From the internet, a select few services go through a VPS, where HAProxy passes TLS through without decrypting it and a CrowdSec bouncer blocks attackers, then over WireGuard to Caddy. At home, trusted devices reach Caddy directly through split-horizon DNS. Remote devices come in over Tailscale, with Tailnet Lock on, through a separate container that hands traffic to Caddy. Caddy ends TLS while CrowdSec reads its logs. Traffic continues over WireGuard to the services.">                 <span class="dg-box">internet</span>
+                     <span class="dg-frame">|</span>
+                     <span class="dg-frame">v</span>
+<span class="dg-frame">+--</span> <span class="dg-box">vps</span> <span class="dg-frame">-----------------------------------+</span>
+<span class="dg-frame">|</span>  <span class="dg-key">haproxy</span>    passes TLS through unopened  <span class="dg-frame">|</span>
+<span class="dg-frame">|</span>  <span class="dg-key">crowdsec</span>   bouncer: blocks at the edge  <span class="dg-frame">|</span>
+<span class="dg-frame">|</span>  <span class="dg-wire">wireguard</span>  tunnel home to caddy         <span class="dg-frame">|</span>
+<span class="dg-frame">+--------------------+---------------------+</span>
+ <span class="dg-box">trusted lan</span>         <span class="dg-frame">|</span>            <span class="dg-box">tailnet</span>
+ <span class="dg-wire">split-horizon</span>       <span class="dg-frame">|</span>       <span class="dg-wire">tailnet lock</span>
+ <span class="dg-wire">dns</span>                 <span class="dg-frame">|</span>                  <span class="dg-frame">|</span>
+  <span class="dg-frame">|</span>                  <span class="dg-frame">|</span>                  <span class="dg-frame">|</span>
+  <span class="dg-frame">v</span>                  <span class="dg-frame">v</span>                  <span class="dg-frame">v</span>
+<span class="dg-frame">+--</span> <span class="dg-box">homelab</span> <span class="dg-frame">-------------------------------+</span>
+<span class="dg-frame">|</span>  <span class="dg-key">caddy</span>      reverse proxy, ends TLS      <span class="dg-frame">|</span>
+<span class="dg-frame">|</span>  <span class="dg-key">crowdsec</span>   reads caddy's logs           <span class="dg-frame">|</span>
+<span class="dg-frame">|</span>  <span class="dg-key">tailscale</span>  own LXC <span class="dg-frame">-&gt;</span> caddy             <span class="dg-frame">|</span>
+<span class="dg-frame">+--------------------+---------------------+</span>
+                     <span class="dg-frame">|</span>
+                     <span class="dg-frame">|</span>  <span class="dg-wire">wireguard</span>
+                     <span class="dg-frame">v</span>
+  immich · opencloud · vaultwarden
+  jellyfin · searxng · frigate · ntfy
+  pocket-id · stirling-pdf · ...</pre>
+          <figcaption>Three ways in: the internet, the tailnet and the trusted LAN.</figcaption>
+        </figure>
+        <dl class="opts env">
+          <div class="opt">
+            <dt>CLUSTER</dt>
+            <dd>Two Proxmox VE nodes, plus the Raspberry Pi 3B+ from v1, now a QDevice whose tie-breaking vote keeps the cluster in quorum when a node goes down. Caddy, Pocket ID, Vaultwarden, OpenCloud, Immich and Stirling PDF get full VMs; everything else runs in LXC containers to save RAM.</dd>
+          </div>
+          <div class="opt">
+            <dt>EDGE</dt>
+            <dd>A VPS is the only way in from the internet, and only for a select few services. HAProxy passes TLS through without decrypting it, so the VPS never sees plaintext, and sends it over WireGuard to Caddy at home. CrowdSec reads Caddy's logs, and its bouncer on the VPS blocks attackers before they reach the house.</dd>
+          </div>
+          <div class="opt">
+            <dt>TRANSPORT</dt>
+            <dd>VMs and containers talk to each other only through WireGuard tunnels, so nothing else on the network can read the traffic between them.</dd>
+          </div>
+          <div class="opt">
+            <dt>NETWORK</dt>
+            <dd>OpenWrt splits the network into subnets for trusted devices, servers, IoT and guests. Trusted devices can open connections to the servers; the servers can only reply. Internet traffic leaves through a VPN provider.</dd>
+          </div>
+          <div class="opt">
+            <dt>DNS</dt>
+            <dd>AdGuard Home with Unbound blocks ads and known-malicious domains. Split-horizon DNS sends devices at home straight to Caddy, so local traffic never leaves the house, and Unbound's own queries go out through the VPN, so the ISP never sees a lookup. A local NTP server keeps the clocks honest.</dd>
+          </div>
+          <div class="opt">
+            <dt>ACCESS</dt>
+            <dd>Everything that isn't public is reachable only over Tailscale, which runs in its own container and hands traffic to Caddy. Tailnet Lock is on, so no device joins the tailnet unless a trusted device signs it, even if Tailscale's own servers were compromised. Pocket ID handles sign-in with passkeys instead of passwords.</dd>
+          </div>
+          <div class="opt">
+            <dt>MONITORING</dt>
+            <dd>Prometheus collects the metrics and Grafana draws them.</dd>
+          </div>
+          <div class="opt">
+            <dt>BACKUPS</dt>
+            <dd>Anything important is encrypted before it leaves the house, then stored on a Hetzner Storage Box.</dd>
+          </div>
+        </dl>
+        <table class="svc">
+          <caption>What runs on it</caption>
+          <thead>
+            <tr><th scope="col">NAME</th><th scope="col">TYPE</th><th scope="col">FOR</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>caddy</td><td>vm</td><td>reverse proxy; TLS ends here</td></tr>
+            <tr><td>pocket-id</td><td>vm</td><td>passkey sign-in (OIDC)</td></tr>
+            <tr><td>vaultwarden</td><td>vm</td><td>passwords</td></tr>
+            <tr><td>opencloud</td><td>vm</td><td>files, instead of Google Drive</td></tr>
+            <tr><td>euro-office</td><td>vm</td><td>office documents, in the browser</td></tr>
+            <tr><td>immich</td><td>vm</td><td>photos, instead of Google Photos</td></tr>
+            <tr><td>stirling-pdf</td><td>vm</td><td>PDF editing</td></tr>
+            <tr><td>jellyfin</td><td>lxc</td><td>movies, shows and music</td></tr>
+            <tr><td>feishin</td><td>lxc</td><td>a web music player for Jellyfin</td></tr>
+            <tr><td>frigate</td><td>lxc</td><td>security cameras (NVR)</td></tr>
+            <tr><td>searxng</td><td>lxc</td><td>search</td></tr>
+            <tr><td>adguard + unbound</td><td>lxc</td><td>DNS, ads and malware blocking</td></tr>
+            <tr><td>ntfy</td><td>lxc</td><td>push notifications without Google</td></tr>
+            <tr><td>prometheus + grafana</td><td>lxc</td><td>monitoring</td></tr>
+            <tr><td>tailscale</td><td>lxc</td><td>remote access, handed to Caddy</td></tr>
+            <tr><td>corosync-qnetd</td><td>pi</td><td>the cluster's tie-breaking vote</td></tr>
+          </tbody>
+        </table>
       </div>
     </section>
 
@@ -210,6 +325,7 @@
     <a href="#synopsis">SYNOPSIS</a>
     <a href="#description">DESCRIPTION</a>
     <a href="#options">OPTIONS</a>
+    <a href="#environment">ENVIRONMENT</a>
     <a href="#files">FILES</a>
     <a href="#see-also">SEE ALSO</a>
     <a href="#bugs">BUGS</a>
