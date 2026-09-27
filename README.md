@@ -24,6 +24,24 @@ It's plain HTML, CSS and JavaScript. There's no framework, no build step, no dep
 └── robots.txt
 ```
 
+## Make it yours
+
+1. **What's filled in.** Your name, the `gureet(8)` handle, the `gureet.ca` domain (including the deploy configs and `security.txt`), and your accounts: Codeberg `wingback`, GitHub `gureett`, LinkedIn `gureetk`, and `hello@gureet.ca`. FastFahr links to `arkelziko/fast-fahr` because the repo lives on a teammate's account. The AUTHOR section links the site's source at `codeberg.org/wingback/pages`, which is the repository name Codeberg Pages uses. What's left is the `20XX` rows in HISTORY, the résumé and the SSH randomart.
+2. **Projects.** Edit the two entries in the PROJECTS section. Lead each one with what it does and what came of it.
+3. **History.** Jobs, clubs, CTF teams and certifications, newest first. Delete rows you don't need.
+4. **Environment.** This is your homelab: the diagram, the entries under it and the table of services. Say what runs and why. Leave out IPs, hostnames, versions, and which services are reachable from the internet. The diagram comes in two drawings, a wide one for desktops and a stacked one for phones. Both live as plain ASCII in `tools/diagram.py`: edit them there, then run `python3 tools/diagram.py` to color them and write them into the page.
+5. **Status line.** Under your name, the line with the green light. Change it, or delete the `<p class="status">` element.
+6. **Résumé.** Put `resume.pdf` in the root folder. Strip its metadata first (`mat2 resume.pdf` or `exiftool -all= resume.pdf`), because PDFs often carry your username, software versions and edit history.
+7. **SSH randomart.** Run the command below and paste the 11-line box into the `<pre>` in the FILES section. Put the `SHA256:` fingerprint in the `<figcaption>`. If the art contains an `&`, write it as `&amp;`. The spans that color `S` and `E` are optional.
+
+   ```sh
+   ssh-keygen -lv -E sha256 -f ~/.ssh/id_ed25519.pub
+   ```
+
+8. **Hidden phrases.** The lens reveals the strings in `PHRASES` at the top of `assets/js/cipher.js`. Add your own. Just below the list, `SCROLL_SPEED` sets how fast the background scrolls compared with the page: `0` keeps it still, `1` moves it with the text, and the default `0.5` makes it read as sitting behind the page. For visitors who've asked their system for reduced motion, it stays still no matter what.
+9. **Dates.** Update the footer date when you edit the page. Each September, update your year of study in HISTORY. `Expires` in `security.txt` should stay less than a year away.
+10. **Width.** `--frame` in `assets/css/site.css` sets how wide the page gets (1440px). Wider screens center it, and the background still fills the screen. Set it to `100vw` to keep the page pinned left at any width.
+
 ## Preview locally
 
 ```sh
