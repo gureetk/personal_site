@@ -4,4 +4,4 @@
 Contact: mailto:hello@gureet.ca
 Expires: 2027-09-26T00:00:00.000Z
 Preferred-Languages: en
-Canonical: https://example.com/.well-known/security.txt
+Canonical: https://gureet.ca/.well-known/security.txt

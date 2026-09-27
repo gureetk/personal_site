@@ -23,8 +23,8 @@
   const promptText = $("#prompt-text");
   const announce = $("#announce");
   const help = $("#help");
-  const pageName = prompt?.dataset.page || "yourname(8)";
-  const handle = prompt?.dataset.handle || "yourname";
+  const pageName = prompt?.dataset.page || "gureet(8)";
+  const handle = prompt?.dataset.handle || "gureet";
 
   // Controls that only work with JavaScript start out hidden in the HTML.
   $$("[data-theme-toggle]").forEach((el) => { el.hidden = false; });
@@ -60,7 +60,7 @@
   new MutationObserver(themeChanged).observe(root, { attributes: true, attributeFilter: ["data-theme"] });
   paintThemeButtons();
 
-  /* ── Pager prompt: "Manual page yourname(8) line 12/240" ─ */
+  /* ── Pager prompt: "Manual page gureet(8) line 12/240" ─ */
   let message = "";
   let messageUntil = 0;
 

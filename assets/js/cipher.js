@@ -35,7 +35,7 @@
     "there's no place like 127.0.0.1",
     "segmentation fault (core dumped)",
     "rotate your keys",
-    "man yourname",
+    "man gureet",
     "git commit -m 'fix'",
     "todo: get hired",
     "uptime is a feature",

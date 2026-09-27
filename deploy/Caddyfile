@@ -17,7 +17,7 @@
 	}
 }
 
-example.com {
+gureet.ca {
 	root * /srv/site
 	encode zstd gzip
 	import security_headers
@@ -34,6 +34,6 @@ example.com {
 	}
 }
 
-www.example.com {
-	redir https://example.com{uri} permanent
+www.gureet.ca {
+	redir https://gureet.ca{uri} permanent
 }
