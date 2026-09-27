@@ -19,6 +19,7 @@ It's plain HTML, CSS and JavaScript. There's no framework, no build step, no dep
 ├── _headers                    security headers for Cloudflare Pages and Netlify
 ├── deploy/Caddyfile            self-hosting with Caddy (automatic HTTPS)
 ├── deploy/nginx.conf           self-hosting with nginx
+├── tools/diagram.py            redraws the homelab diagram in index.html
 ├── .nojekyll                   stops GitHub Pages from hiding .well-known/
 └── robots.txt
 ```

@@ -117,6 +117,7 @@
       <div class="sh-body">
         <p class="lede"><b>gureet</b> runs in a homelab, now on its third version. The rule is to self-host everything possible, to stay in control of personal data and secure as much as possible locally.</p>
         <figure class="diagram">
+          <!-- Both diagrams are generated from tools/diagram.py: edit the ASCII there, then run it. -->
 <pre data-diagram="wide" role="img" aria-label="Three ways into the homelab. From the internet, a select few services go through a VPS, where HAProxy passes TLS through without decrypting it and a CrowdSec bouncer blocks attackers, then over WireGuard to Caddy. At home, trusted devices reach Caddy directly through split-horizon DNS. Remote devices come in over Tailscale, with Tailnet Lock on, through a separate container that hands traffic to Caddy. Caddy ends TLS while CrowdSec reads its logs. Traffic continues over WireGuard to the services.">                                  <span class="dg-box">internet</span>
                                       <span class="dg-frame">|</span>
                                       <span class="dg-frame">v</span>
