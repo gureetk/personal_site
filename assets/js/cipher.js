@@ -50,6 +50,7 @@
     "degoogled: photos, drive, search, push",
     "tailnet lock: enabled",
     "homelab v3, now with quorum",
+    "ups: online",
     "sudo dnf upgrade --refresh",
     "offline first",
   ];

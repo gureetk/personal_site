@@ -167,6 +167,10 @@
             <dd>Two Proxmox VE nodes, plus the Raspberry Pi 3B+ from v1, now a QDevice whose tie-breaking vote keeps the cluster in quorum when a node goes down. Caddy, Pocket ID, Vaultwarden, OpenCloud, Immich and Stirling PDF get full VMs; everything else runs in LXC containers to save RAM.</dd>
           </div>
           <div class="opt">
+            <dt>POWER</dt>
+            <dd>Everything is on a UPS, including the OpenWrt router and the fiber ONT, so the network and some services stay up through an outage. When the power goes out, NUT shuts down the power-hungry node to stretch the battery while the low-wattage node keeps running. WOLNUT, on the Pi, wakes the big node back up when power returns.</dd>
+          </div>
+          <div class="opt">
             <dt>EDGE</dt>
             <dd>A VPS is the only way in from the internet, and only for a select few services. HAProxy passes TLS through without decrypting it, so the VPS never sees plaintext, and sends it over WireGuard to Caddy at home. CrowdSec reads Caddy's logs, and its bouncer on the VPS blocks attackers before they reach the house.</dd>
           </div>
@@ -217,6 +221,7 @@
             <tr><td>prometheus + grafana</td><td>lxc</td><td>monitoring</td></tr>
             <tr><td>tailscale</td><td>lxc</td><td>remote access, handed to Caddy</td></tr>
             <tr><td>corosync-qnetd</td><td>pi</td><td>the cluster's tie-breaking vote</td></tr>
+            <tr><td>wolnut</td><td>pi</td><td>wakes the big node after an outage</td></tr>
           </tbody>
         </table>
       </div>
