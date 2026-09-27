@@ -1,0 +1,664 @@
+/* yourname(8): a man page in a pager, over an encrypted hexdump.
+   Colors live in the tokens below; components only ever read tokens. */
+
+/* ── Fonts (self-hosted, SIL OFL 1.1; licenses in assets/fonts) ── */
+@font-face {
+  font-family: "Iosevka";
+  src: url("../fonts/iosevka-latin-700-normal.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Atkinson Hyperlegible Mono";
+  src: url("../fonts/atkinson-hyperlegible-mono-latin-400-normal.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Atkinson Hyperlegible Mono";
+  src: url("../fonts/atkinson-hyperlegible-mono-latin-700-normal.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Atkinson Hyperlegible Next";
+  src: url("../fonts/atkinson-hyperlegible-next-latin-400-normal.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Atkinson Hyperlegible Next";
+  src: url("../fonts/atkinson-hyperlegible-next-latin-700-normal.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ── Tokens: paper (light) ─────────────────────────────────── */
+:root {
+  --bg: #eeeeea;
+  --bg-raise: #e6e5df;
+  --ink: #1b1a17;
+  --text: #2c2a25;
+  --muted: #5b5850;
+  --faint: #8a867d;
+  --rule: rgba(27, 26, 23, 0.14);
+  --amber: #8f5a00;
+  --green: #1d6b47;
+  --led: #2e9a5d;
+  --led-halo: rgba(46, 154, 93, 0.18);
+  --glow: none;
+  --glow-box: none;
+  --sel: rgba(143, 90, 0, 0.2);
+  --backdrop: rgba(27, 26, 23, 0.35);
+
+  /* Read by cipher.js */
+  --field-rgb: 27, 26, 23;
+  --field-alpha: 0.085;
+  --lens-rgb: 143, 90, 0;
+  --lens-max: 0.9;
+  --packet-rgb: 29, 107, 71;
+
+  --font-display: "Iosevka", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  --font-mono: "Atkinson Hyperlegible Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  --font-body: "Atkinson Hyperlegible Next", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+  --gutter: clamp(16px, 5.5vw, 96px);
+  --frame: 100vw;
+  --indent: 3.6rem;   /* man(1) indents section bodies by 7 columns */
+  --indent-2: 2.6rem;
+
+  color-scheme: light;
+}
+
+/* ── Tokens: phosphor (dark) ───────────────────────────────── */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #111110;
+    --bg-raise: #1b1a17;
+    --ink: #f3efe6;
+    --text: #d7d2c5;
+    --muted: #9f998b;
+    --faint: #6e695f;
+    --rule: rgba(243, 239, 230, 0.11);
+    --amber: #f2b04a;
+    --green: #8fd1a1;
+    --led: #6ee29a;
+    --led-halo: rgba(110, 226, 154, 0.16);
+    --glow: 0 0 24px rgba(242, 176, 74, 0.3), 0 0 2px rgba(242, 176, 74, 0.5);
+    --glow-box: 0 0 16px rgba(242, 176, 74, 0.45);
+    --sel: rgba(242, 176, 74, 0.28);
+    --backdrop: rgba(0, 0, 0, 0.55);
+    --field-rgb: 215, 210, 197;
+    --field-alpha: 0.1;
+    --lens-rgb: 242, 176, 74;
+    --lens-max: 0.95;
+    --packet-rgb: 143, 209, 161;
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme="dark"] {
+  --bg: #111110;
+  --bg-raise: #1b1a17;
+  --ink: #f3efe6;
+  --text: #d7d2c5;
+  --muted: #9f998b;
+  --faint: #6e695f;
+  --rule: rgba(243, 239, 230, 0.11);
+  --amber: #f2b04a;
+  --green: #8fd1a1;
+  --led: #6ee29a;
+  --led-halo: rgba(110, 226, 154, 0.16);
+  --glow: 0 0 24px rgba(242, 176, 74, 0.3), 0 0 2px rgba(242, 176, 74, 0.5);
+  --glow-box: 0 0 16px rgba(242, 176, 74, 0.45);
+  --sel: rgba(242, 176, 74, 0.28);
+  --backdrop: rgba(0, 0, 0, 0.55);
+  --field-rgb: 215, 210, 197;
+  --field-alpha: 0.1;
+  --lens-rgb: 242, 176, 74;
+  --lens-max: 0.95;
+  --packet-rgb: 143, 209, 161;
+  color-scheme: dark;
+}
+
+/* ── Base ──────────────────────────────────────────────────── */
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 400 1.0625rem/1.65 var(--font-body);
+  font-kerning: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+::selection { background: var(--sel); color: var(--ink); }
+
+p { margin: 0; }
+
+b,
+strong { color: var(--ink); font-weight: 700; }
+
+code {
+  font-family: var(--font-mono);
+  font-size: 0.92em;
+  color: var(--ink);
+}
+
+a {
+  color: var(--green);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.22em;
+}
+
+a:hover { text-decoration-thickness: 2px; }
+
+:focus-visible {
+  outline: 2px solid var(--amber);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip {
+  position: absolute;
+  z-index: 20;
+  left: var(--gutter);
+  top: 0.5rem;
+  padding: 0.35rem 0.6rem;
+  background: var(--ink);
+  color: var(--bg);
+  font: 400 0.8125rem/1.3 var(--font-mono);
+  transform: translateY(-200%);
+}
+
+.skip:focus { transform: none; }
+
+/* ── The encrypted field (drawn by cipher.js) ─────────────── */
+.cipher {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  height: 100lvh;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 1.4s ease;
+}
+
+.cipher.on { opacity: 1; }
+
+@media (prefers-reduced-motion: reduce) {
+  .cipher { transition: none; }
+}
+
+@media (prefers-contrast: more) {
+  .cipher { display: none; }
+}
+
+/* ── Page frame: header line, contents, footer line ───────── */
+.page {
+  position: relative;
+  z-index: 1;
+  max-width: var(--frame);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+  padding-block: 0 5rem;
+}
+
+.man-head,
+.man-foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  font: 400 0.8125rem/1.5 var(--font-mono);
+  letter-spacing: 0.02em;
+  color: var(--muted);
+}
+
+.man-head { padding-block: 1.4rem 0.9rem; }
+.man-foot { padding-block: 3.5rem 0; }
+
+.mid { text-align: center; }
+
+.bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem 1.5rem;
+}
+
+.toc {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.2rem 1.1rem;
+  font: 700 0.75rem/1.7 var(--font-mono);
+  letter-spacing: 0.08em;
+}
+
+.toc a,
+.help-toc a {
+  color: var(--muted);
+  text-decoration: none;
+}
+
+.toc a:hover,
+.help-toc a:hover { color: var(--amber); }
+
+.theme-toggle {
+  padding: 0.38rem 0.6rem;
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  background: var(--bg);
+  color: var(--muted);
+  font: 400 0.75rem/1 var(--font-mono);
+  letter-spacing: 0.02em;
+  cursor: pointer;
+}
+
+.theme-toggle:hover { color: var(--amber); border-color: var(--amber); }
+
+/* ── The manual ────────────────────────────────────────────── */
+.man {
+  display: flex;
+  flex-direction: column;
+  gap: 2.1rem;
+  max-width: 46rem;
+  padding-top: clamp(2rem, 6vh, 3.75rem);
+}
+
+.sh { scroll-margin-top: 1.25rem; }
+
+.sh h2,
+.sh-title {
+  margin: 0 0 0.55rem;
+  font: 700 0.875rem/1.4 var(--font-mono);
+  letter-spacing: 0.08em;
+  color: var(--amber);
+}
+
+.sh-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  margin-left: var(--indent);
+}
+
+.prose p,
+.opt dd,
+.log .what { max-width: 38rem; }
+
+/* NAME */
+.sh-name .sh-body { gap: 1.05rem; }
+
+.name {
+  margin: 0.1rem 0 0.15rem;
+  font: 700 clamp(2.6rem, 8.4vw, 6rem)/0.95 var(--font-display);
+  letter-spacing: -0.01em;
+  color: var(--amber);
+  text-shadow: var(--glow);
+  text-wrap: balance;
+  overflow-wrap: anywhere;
+}
+
+.cursor {
+  display: inline-block;
+  width: 0.42em;
+  height: 0.74em;
+  margin-left: 0.1em;
+  vertical-align: -0.04em;
+  background: var(--amber);
+  box-shadow: var(--glow-box);
+  animation: blink 1.1s steps(1, end) infinite;
+}
+
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
+.whatis {
+  max-width: 40rem;
+  font: 400 1.0625rem/1.55 var(--font-mono);
+  color: var(--text);
+}
+
+.status {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  font: 400 0.875rem/1.5 var(--font-mono);
+  color: var(--muted);
+}
+
+.led {
+  flex: none;
+  width: 0.5rem;
+  height: 0.5rem;
+  margin-top: calc((1.5em - 0.5rem) / 2); /* centered on the first line when the text wraps */
+  border-radius: 50%;
+  background: var(--led);
+  box-shadow: 0 0 0 3px var(--led-halo), 0 0 10px var(--led);
+  animation: pulse 2.8s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  50% { opacity: 0.55; }
+}
+
+.quick {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 1.4rem;
+  margin: 0.15rem 0 0;
+  padding: 0;
+  list-style: none;
+  font: 400 0.9375rem/1.5 var(--font-mono);
+}
+
+/* SYNOPSIS: long lines wrap with a hanging indent, like man(1) does */
+.synopsis {
+  padding-left: 4ch;
+  text-indent: -4ch;
+  font: 400 1rem/1.65 var(--font-mono);
+  color: var(--muted);
+}
+
+.synopsis .flag { white-space: nowrap; }
+
+.synopsis a:not(.arg) { color: inherit; text-decoration: none; }
+.synopsis a:not(.arg):hover b { color: var(--amber); }
+
+/* OPTIONS */
+.opts {
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+  margin: 0;
+}
+
+.opt { scroll-margin-top: 1.25rem; }
+
+.opt dt {
+  font: 700 1rem/1.5 var(--font-mono);
+  color: var(--ink);
+}
+
+.opt dd {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin: 0.2rem 0 0 var(--indent-2);
+}
+
+.opt:target dt { color: var(--amber); }
+
+/* FILES and SEE ALSO */
+.files {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin: 0;
+}
+
+.files > div {
+  display: grid;
+  grid-template-columns: minmax(0, 15rem) minmax(0, 1fr);
+  gap: 0.1rem 1.5rem;
+}
+
+.files dt {
+  font: 400 0.9375rem/1.75 var(--font-mono);
+  overflow-wrap: anywhere;
+}
+
+.files dd {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin: 0;
+}
+
+.seealso dt { font-weight: 700; color: var(--ink); }
+.seealso dd { font: 400 0.9375rem/1.75 var(--font-mono); }
+
+.randomart {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 0.6rem 1.4rem;
+  margin: 0.2rem 0 0;
+}
+
+.randomart pre {
+  margin: 0;
+  font: 400 0.8125rem/1.2 var(--font-mono);
+  color: var(--text);
+}
+
+.ra-frame { color: var(--faint); }
+.ra-s,
+.ra-e { color: var(--amber); font-weight: 700; }
+
+.randomart figcaption {
+  max-width: 17rem;
+  font: 400 0.75rem/1.5 var(--font-mono);
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
+
+.colophon { color: var(--muted); font-size: 0.9375rem; }
+
+/* ── Pager prompt (less-style, reverse video) ─────────────── */
+.prompt {
+  position: fixed;
+  left: max(0px, calc((100% - var(--frame)) / 2)); /* the frame's bottom-left corner */
+  bottom: 0;
+  z-index: 10;
+  max-width: 100%;
+  margin: 0;
+  padding: 0.3rem 0.6rem calc(0.3rem + env(safe-area-inset-bottom, 0px)) calc(0.6rem + env(safe-area-inset-left, 0px));
+  border: 0;
+  border-radius: 0;
+  background: var(--ink);
+  color: var(--bg);
+  font: 400 0.8125rem/1.35 var(--font-mono);
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+}
+
+.prompt:hover { background: var(--amber); }
+
+/* ── Help screen ───────────────────────────────────────────── */
+.help {
+  width: min(44rem, calc(100% - 2rem));
+  max-height: calc(100% - 3rem);
+  padding: 1.25rem 1.5rem 1.4rem;
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  background: var(--bg-raise);
+  color: var(--text);
+  font: 400 0.875rem/1.6 var(--font-mono);
+}
+
+.help::backdrop { background: var(--backdrop); }
+
+.help-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.help h2,
+.help-sub {
+  margin: 0;
+  font: 700 0.8125rem/1.4 var(--font-mono);
+  letter-spacing: 0.08em;
+  color: var(--amber);
+}
+
+.help-sub { margin-top: 1.25rem; }
+
+.help-note { margin-top: 0.3rem; color: var(--muted); }
+
+.help-close {
+  min-width: 2rem;
+  padding: 0.3rem 0.55rem;
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  background: transparent;
+  color: var(--muted);
+  font: 700 0.8125rem/1 var(--font-mono);
+  cursor: pointer;
+}
+
+.help-close:hover { color: var(--amber); border-color: var(--amber); }
+
+.keys {
+  width: 100%;
+  margin-top: 0.9rem;
+  border-collapse: collapse;
+}
+
+.keys th {
+  width: 9rem;
+  padding: 0.12rem 1.25rem 0.12rem 0;
+  font-weight: 700;
+  color: var(--ink);
+  text-align: left;
+  vertical-align: top;
+  white-space: nowrap;
+}
+
+.keys td { padding: 0.12rem 0; }
+
+.help-toc {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.2rem 1rem;
+  margin-top: 0.45rem;
+  font-weight: 700;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+}
+
+.help-opts {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem 1.5rem;
+  margin-top: 1.4rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--rule);
+}
+
+.check {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text);
+  cursor: pointer;
+}
+
+.check input { accent-color: var(--amber); width: 1rem; height: 1rem; margin: 0; }
+
+/* ── Small screens ─────────────────────────────────────────── */
+@media (max-width: 640px) {
+  :root {
+    --indent: 1rem;
+    --indent-2: 1rem;
+  }
+
+  body { font-size: 1rem; }
+
+  .man-head .mid,
+  .man-foot .mid { display: none; }
+
+  .man { gap: 1.85rem; }
+
+  .whatis { font-size: 0.9375rem; }
+
+  .files > div { grid-template-columns: minmax(0, 1fr); }
+
+  .files dd { margin-left: 1rem; }
+
+  .keys th { width: 6.5rem; padding-right: 0.75rem; }
+
+  .help { padding: 1rem 1.1rem 1.2rem; }
+}
+
+/* ── Motion preferences ────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .cursor,
+  .led { animation: none; }
+}
+
+/* ── Print: it's a man page, so it prints like one ─────────── */
+@media print {
+  :root,
+  :root:not([data-theme="light"]),
+  :root[data-theme="dark"] {
+    --bg: #fff;
+    --ink: #000;
+    --text: #111;
+    --muted: #333;
+    --faint: #666;
+    --amber: #000;
+    --green: #000;
+    --glow: none;
+    --glow-box: none;
+    color-scheme: light;
+  }
+
+  .cipher,
+  .bar,
+  .skip,
+  .prompt,
+  .cursor,
+  .led,
+  .help { display: none !important; }
+
+  .page { padding: 0; }
+  .name { font-size: 26pt; }
+  .man { gap: 1.2rem; padding-top: 1rem; }
+  a { text-decoration: none; }
+}

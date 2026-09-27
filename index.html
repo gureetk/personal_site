@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!-- Everything is served from this origin: no CDNs, no analytics, no inline code. -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; base-uri 'none'; form-action 'none'; upgrade-insecure-requests">
+<meta name="referrer" content="no-referrer">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#eeeeea" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#111110" media="(prefers-color-scheme: dark)">
+<title>Your Name · yourname(8)</title>
+<meta name="description" content="Your Name: computer science student into security, infrastructure and free software.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Your Name · yourname(8)">
+<meta property="og:description" content="Computer science student into security, infrastructure and free software.">
+<meta property="og:url" content="https://example.com/">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preload" href="assets/fonts/iosevka-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/atkinson-hyperlegible-next-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/atkinson-hyperlegible-mono-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/css/site.css">
+<script src="assets/js/theme-init.js"></script>
+</head>
+<body>
+<a class="skip" href="#name">Skip to content</a>
+
+<div class="page">
+  <header class="man-head">
+    <span>YOURNAME(8)</span>
+    <span class="mid">System Manager's Manual</span>
+    <span>YOURNAME(8)</span>
+  </header>
+
+  <div class="bar">
+    <nav class="toc" aria-label="Sections">
+      <a href="#name">NAME</a>
+      <a href="#synopsis">SYNOPSIS</a>
+      <a href="#description">DESCRIPTION</a>
+      <a href="#options">OPTIONS</a>
+      <a href="#files">FILES</a>
+      <a href="#see-also">SEE ALSO</a>
+      <a href="#bugs">BUGS</a>
+    </nav>
+  </div>
+
+  <main class="man" id="main">
+
+    <!-- NAME: your name, a one-line whatis entry, status and the links recruiters look for first. -->
+    <section class="sh sh-name" id="name" aria-label="Name">
+      <div class="sh-title" aria-hidden="true">NAME</div>
+      <div class="sh-body">
+        <h1 class="name"><span class="sr-only">Your Name</span><span class="name-text" aria-hidden="true" data-scramble>Your Name</span><span class="cursor" aria-hidden="true"></span></h1>
+        <p class="whatis"><b>yourname</b> — computer science student who likes systems that stay up and keep secrets</p>
+        <p class="status"><span class="led" aria-hidden="true"></span>looking for a security or infrastructure co-op · fall 2027 – winter 2028, open to longer</p>
+        <ul class="quick" aria-label="Links">
+          <li><a href="https://codeberg.org/yourname">codeberg</a></li>
+          <li><a href="https://github.com/yourname">github</a></li>
+          <li><a href="https://www.linkedin.com/in/yourname">linkedin</a></li>
+          <li><a href="mailto:you@example.com">email</a></li>
+          <li><a href="resume.pdf">résumé</a></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="sh" id="synopsis" aria-labelledby="h-synopsis">
+      <h2 id="h-synopsis">SYNOPSIS</h2>
+      <div class="sh-body">
+        <p class="synopsis"><b>yourname</b> <span class="flag">[<a href="#opt-security"><b>--security</b></a>]</span> <span class="flag">[<a href="#opt-infrastructure"><b>--infrastructure</b></a>]</span> <span class="flag">[<a href="#opt-free-software"><b>--free-software</b></a>]</span> <span class="flag">[<a href="#opt-privacy"><b>--privacy</b></a>]</span></p>
+        <p class="synopsis"><b>yourname</b> <b>--contact</b> <a class="arg" href="mailto:you@example.com">you@example.com</a></p>
+      </div>
+    </section>
+
+    <section class="sh" id="description" aria-labelledby="h-description">
+      <h2 id="h-description">DESCRIPTION</h2>
+      <div class="sh-body prose">
+        <p><b>yourname</b> studies computer science at McMaster University and is most at home in the layers people rarely see: operating systems, networks, and the infrastructure everything else runs on. That interest started in 2022 with a Raspberry Pi running two services, and the homelab is now on its third version. The plan is a career in security or infrastructure, ideally where the two meet, with plenty of curiosity left over for the rest of the field.</p>
+        <p><b>yourname</b> daily-drives Fedora Linux and GrapheneOS and lives as de-Googled a life as possible: free and open-source software first, offline tools where the task allows, and self-hosted services for the rest. The software people depend on should be free to read, change and share.</p>
+      </div>
+    </section>
+
+    <section class="sh" id="options" aria-labelledby="h-options">
+      <h2 id="h-options">OPTIONS</h2>
+      <div class="sh-body">
+        <dl class="opts">
+          <div class="opt" id="opt-security">
+            <dt>--security</dt>
+            <dd>How systems fail, and how to make failure boring. Threat modeling, hardening, and learning to think like an attacker.</dd>
+          </div>
+          <div class="opt" id="opt-infrastructure">
+            <dt>--infrastructure</dt>
+            <dd>Linux, networking, virtualization, and the plumbing that keeps services up: reverse proxies, DNS, monitoring and backups. Most of it learned by running a homelab.</dd>
+          </div>
+          <div class="opt" id="opt-free-software">
+            <dt>--free-software</dt>
+            <dd>Tools that can be read, audited and fixed, preferably ones that keep working offline. Most of the code lives on <a href="https://codeberg.org/yourname">Codeberg</a>.</dd>
+          </div>
+          <div class="opt" id="opt-privacy">
+            <dt>--privacy</dt>
+            <dd>Collect less and encrypt the rest. A de-Googled phone on GrapheneOS, self-hosted services instead of rented ones, and a threat model for everything else.</dd>
+          </div>
+        </dl>
+      </div>
+    </section>
+
+    <section class="sh" id="files" aria-labelledby="h-files">
+      <h2 id="h-files">FILES</h2>
+      <div class="sh-body">
+        <dl class="files">
+          <div>
+            <dt><a href="resume.pdf">resume.pdf</a></dt>
+            <dd>Résumé, one page.</dd>
+          </div>
+          <div>
+            <dt><a href="https://codeberg.org/yourname.keys">~/.ssh/id_ed25519.pub</a></dt>
+            <dd>
+              <p>SSH public key, also at codeberg.org/yourname.keys and github.com/yourname.keys. Its fingerprint, drawn the way <code>ssh-keygen</code> draws it:</p>
+              <!-- Replace with the output of: ssh-keygen -lv -E sha256 -f ~/.ssh/id_ed25519.pub -->
+              <figure class="randomart">
+<pre aria-hidden="true"><span class="ra-frame">+--[ED25519 256]--+</span>
+<span class="ra-frame">|</span>    .. .oB%B    o<span class="ra-frame">|</span>
+<span class="ra-frame">|</span>   . ...o+*O.. oo<span class="ra-frame">|</span>
+<span class="ra-frame">|</span>    . . o = . ..o<span class="ra-frame">|</span>
+<span class="ra-frame">|</span>       o . o   ..<span class="ra-frame">|</span>
+<span class="ra-frame">|</span>        <span class="ra-s">S</span> ..  .  <span class="ra-frame">|</span>
+<span class="ra-frame">|</span>         ...o. . <span class="ra-frame">|</span>
+<span class="ra-frame">|</span>         ..o..o o<span class="ra-frame">|</span>
+<span class="ra-frame">|</span>        . o.o..=o<span class="ra-frame">|</span>
+<span class="ra-frame">|</span>         . <span class="ra-e">E</span>.o*+o<span class="ra-frame">|</span>
+<span class="ra-frame">+----[SHA256]-----+</span></pre>
+                <figcaption>SHA256:/G+/nlwHRbeHiDHcMDMxmXCcWD6DlAje99/zngBr6J0</figcaption>
+              </figure>
+            </dd>
+          </div>
+          <div>
+            <dt><a href=".well-known/security.txt">/.well-known/security.txt</a></dt>
+            <dd>How to report a security issue with this site.</dd>
+          </div>
+        </dl>
+      </div>
+    </section>
+
+    <section class="sh" id="see-also" aria-labelledby="h-see-also">
+      <h2 id="h-see-also">SEE ALSO</h2>
+      <div class="sh-body">
+        <dl class="files seealso">
+          <div><dt>codeberg(1)</dt><dd><a href="https://codeberg.org/yourname">codeberg.org/yourname</a></dd></div>
+          <div><dt>github(1)</dt><dd><a href="https://github.com/yourname">github.com/yourname</a></dd></div>
+          <div><dt>linkedin(1)</dt><dd><a href="https://www.linkedin.com/in/yourname">linkedin.com/in/yourname</a></dd></div>
+          <div><dt>mail(1)</dt><dd><a href="mailto:you@example.com">you@example.com</a></dd></div>
+        </dl>
+      </div>
+    </section>
+
+    <section class="sh" id="bugs" aria-labelledby="h-bugs">
+      <h2 id="h-bugs">BUGS</h2>
+      <div class="sh-body prose">
+        <p>Known to disappear down rabbit holes for days at a time. It was DNS.</p>
+        <p>Found a real one? Please report it the way <a href=".well-known/security.txt">security.txt</a> describes.</p>
+      </div>
+    </section>
+
+    <section class="sh" id="author" aria-labelledby="h-author">
+      <h2 id="h-author">AUTHOR</h2>
+      <div class="sh-body prose">
+        <p>Written by Your Name.</p>
+        <p class="colophon">This page loads no trackers, sets no cookies and makes no third-party requests. It reads fine with JavaScript turned off, including in Tor Browser's Safest mode. Set in Iosevka and Atkinson Hyperlegible, both free fonts. Source at <a href="https://codeberg.org/yourname/pages">codeberg.org/yourname/pages</a>.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="man-foot">
+    <span>example.com</span>
+    <span class="mid"><time datetime="2026-09-27">September 27, 2026</time></span>
+    <span>YOURNAME(8)</span>
+  </footer>
+</div>
+
+</body>
+</html>
