@@ -31,8 +31,9 @@ WIDE = r"""
                                       v
  trusted lan    +-- homelab -------------------------------+
  -------------->|  caddy      reverse proxy, ends TLS      |
- split-horizon  |  crowdsec   reads caddy's logs           |  tailnet
- dns            |  tailscale  own LXC -> caddy             |<----------
+ split-horizon  |  crowdsec   reads caddy's logs           |
+ dns            |  anubis     proof-of-work vs scrapers    |  tailnet
+                |  tailscale  own LXC -> caddy             |<----------
                 +---------------------+--------------------+ tailnet lock
                                       |
                                       |  wireguard
@@ -58,6 +59,7 @@ NARROW = r"""
 +-- homelab -------------------------------+
 |  caddy      reverse proxy, ends TLS      |
 |  crowdsec   reads caddy's logs           |
+|  anubis     proof-of-work vs scrapers    |
 |  tailscale  own LXC -> caddy             |
 +--------------------+---------------------+
                      |

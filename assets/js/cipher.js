@@ -55,6 +55,7 @@
     "ups: online",
     "sudo dnf upgrade --refresh",
     "offline first",
+    "anubis is weighing your soul",
   ];
 
   /** How fast the field scrolls compared with the page: 0 keeps it still,

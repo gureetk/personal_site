@@ -118,7 +118,7 @@
         <p class="lede"><b>gureet</b> runs in a homelab, now on its third version. The rule is to self-host everything possible, to stay in control of personal data and secure as much as possible locally.</p>
         <figure class="diagram">
           <!-- Both diagrams are generated from tools/diagram.py: edit the ASCII there, then run it. -->
-<pre data-diagram="wide" role="img" aria-label="Three ways into the homelab. From the internet, a select few services go through a VPS, where HAProxy passes TLS through without decrypting it and a CrowdSec bouncer blocks attackers, then over WireGuard to Caddy. At home, trusted devices reach Caddy directly through split-horizon DNS. Remote devices come in over Tailscale, with Tailnet Lock on, through a separate container that hands traffic to Caddy. Caddy ends TLS while CrowdSec reads its logs. Traffic continues over WireGuard to the services.">                                  <span class="dg-box">internet</span>
+<pre data-diagram="wide" role="img" aria-label="Three ways into the homelab. From the internet, a select few services go through a VPS, where HAProxy passes TLS through without decrypting it and a CrowdSec bouncer blocks attackers, then over WireGuard to Caddy. At home, trusted devices reach Caddy directly through split-horizon DNS. Remote devices come in over Tailscale, with Tailnet Lock on, through a separate container that hands traffic to Caddy. Caddy ends TLS while CrowdSec reads its logs, and Anubis puts a proof-of-work check in front of the public services. Traffic continues over WireGuard to the services.">                                  <span class="dg-box">internet</span>
                                       <span class="dg-frame">|</span>
                                       <span class="dg-frame">v</span>
                 <span class="dg-frame">+--</span> <span class="dg-box">vps</span> <span class="dg-frame">-----------------------------------+</span>
@@ -130,15 +130,16 @@
                                       <span class="dg-frame">v</span>
  <span class="dg-box">trusted lan</span>    <span class="dg-frame">+--</span> <span class="dg-box">homelab</span> <span class="dg-frame">-------------------------------+</span>
  <span class="dg-frame">--------------&gt;|</span>  <span class="dg-key">caddy</span>      reverse proxy, ends TLS      <span class="dg-frame">|</span>
- <span class="dg-wire">split-horizon</span>  <span class="dg-frame">|</span>  <span class="dg-key">crowdsec</span>   reads caddy's logs           <span class="dg-frame">|</span>  <span class="dg-box">tailnet</span>
- <span class="dg-wire">dns</span>            <span class="dg-frame">|</span>  <span class="dg-key">tailscale</span>  own LXC <span class="dg-frame">-&gt;</span> caddy             <span class="dg-frame">|&lt;----------</span>
+ <span class="dg-wire">split-horizon</span>  <span class="dg-frame">|</span>  <span class="dg-key">crowdsec</span>   reads caddy's logs           <span class="dg-frame">|</span>
+ <span class="dg-wire">dns</span>            <span class="dg-frame">|</span>  <span class="dg-key">anubis</span>     proof-of-work vs scrapers    <span class="dg-frame">|</span>  <span class="dg-box">tailnet</span>
+                <span class="dg-frame">|</span>  <span class="dg-key">tailscale</span>  own LXC <span class="dg-frame">-&gt;</span> caddy             <span class="dg-frame">|&lt;----------</span>
                 <span class="dg-frame">+---------------------+--------------------+</span> <span class="dg-wire">tailnet lock</span>
                                       <span class="dg-frame">|</span>
                                       <span class="dg-frame">|</span>  <span class="dg-wire">wireguard</span>
                                       <span class="dg-frame">v</span>
                 immich · opencloud · vaultwarden · jellyfin
                 searxng · frigate · ntfy · pocket-id · stirling-pdf · ...</pre>
-<pre data-diagram="narrow" role="img" aria-label="Three ways into the homelab. From the internet, a select few services go through a VPS, where HAProxy passes TLS through without decrypting it and a CrowdSec bouncer blocks attackers, then over WireGuard to Caddy. At home, trusted devices reach Caddy directly through split-horizon DNS. Remote devices come in over Tailscale, with Tailnet Lock on, through a separate container that hands traffic to Caddy. Caddy ends TLS while CrowdSec reads its logs. Traffic continues over WireGuard to the services.">                 <span class="dg-box">internet</span>
+<pre data-diagram="narrow" role="img" aria-label="Three ways into the homelab. From the internet, a select few services go through a VPS, where HAProxy passes TLS through without decrypting it and a CrowdSec bouncer blocks attackers, then over WireGuard to Caddy. At home, trusted devices reach Caddy directly through split-horizon DNS. Remote devices come in over Tailscale, with Tailnet Lock on, through a separate container that hands traffic to Caddy. Caddy ends TLS while CrowdSec reads its logs, and Anubis puts a proof-of-work check in front of the public services. Traffic continues over WireGuard to the services.">                 <span class="dg-box">internet</span>
                      <span class="dg-frame">|</span>
                      <span class="dg-frame">v</span>
 <span class="dg-frame">+--</span> <span class="dg-box">vps</span> <span class="dg-frame">-----------------------------------+</span>
@@ -154,6 +155,7 @@
 <span class="dg-frame">+--</span> <span class="dg-box">homelab</span> <span class="dg-frame">-------------------------------+</span>
 <span class="dg-frame">|</span>  <span class="dg-key">caddy</span>      reverse proxy, ends TLS      <span class="dg-frame">|</span>
 <span class="dg-frame">|</span>  <span class="dg-key">crowdsec</span>   reads caddy's logs           <span class="dg-frame">|</span>
+<span class="dg-frame">|</span>  <span class="dg-key">anubis</span>     proof-of-work vs scrapers    <span class="dg-frame">|</span>
 <span class="dg-frame">|</span>  <span class="dg-key">tailscale</span>  own LXC <span class="dg-frame">-&gt;</span> caddy             <span class="dg-frame">|</span>
 <span class="dg-frame">+--------------------+---------------------+</span>
                      <span class="dg-frame">|</span>
@@ -175,7 +177,7 @@
           </div>
           <div class="opt">
             <dt>EDGE</dt>
-            <dd>A VPS is the only way in from the internet, and only for a select few services. HAProxy passes TLS through without decrypting it, so the VPS never sees plaintext, and sends it over WireGuard to Caddy at home. CrowdSec reads Caddy's logs, and its bouncer on the VPS blocks attackers before they reach the house.</dd>
+            <dd>A VPS is the only way in from the internet, and only for a select few services. HAProxy passes TLS through without decrypting it, so the VPS never sees plaintext, and sends it over WireGuard to Caddy at home. CrowdSec reads Caddy's logs, and its bouncer on the VPS blocks attackers before they reach the house. Where it won't break an app's clients, Anubis also stands in front of the public services and makes each browser solve a small proof-of-work challenge first, which keeps AI scrapers and other bots out.</dd>
           </div>
           <div class="opt">
             <dt>TRANSPORT</dt>
