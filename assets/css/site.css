@@ -427,6 +427,28 @@ a:hover { text-decoration-thickness: 2px; }
 
 .opt:target dt { color: var(--amber); }
 
+/* HISTORY */
+.log {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.log li {
+  display: grid;
+  grid-template-columns: 8.5rem minmax(0, 1fr);
+  gap: 0.1rem 1.25rem;
+}
+
+.when {
+  font: 400 0.875rem/1.95 var(--font-mono);
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
 /* FILES and SEE ALSO */
 .files {
   display: flex;
@@ -686,6 +708,8 @@ a:hover { text-decoration-thickness: 2px; }
   .man { gap: 1.85rem; }
 
   .whatis { font-size: 0.9375rem; }
+
+  .log li { grid-template-columns: minmax(0, 1fr); }
 
   .files > div { grid-template-columns: minmax(0, 1fr); }
 
