@@ -403,7 +403,7 @@ a:hover { text-decoration-thickness: 2px; }
 .synopsis a:not(.arg) { color: inherit; text-decoration: none; }
 .synopsis a:not(.arg):hover b { color: var(--amber); }
 
-/* OPTIONS */
+/* OPTIONS and PROJECTS */
 .opts {
   display: flex;
   flex-direction: column;
@@ -426,6 +426,25 @@ a:hover { text-decoration-thickness: 2px; }
 }
 
 .opt:target dt { color: var(--amber); }
+
+.projects dt a {
+  color: var(--ink);
+  text-decoration-color: var(--rule);
+}
+
+.projects dt a:hover { color: var(--amber); text-decoration-color: currentColor; }
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1.75rem;
+  font: 400 0.8125rem/1.6 var(--font-mono);
+  color: var(--muted);
+}
+
+.plinks { display: flex; gap: 1rem; }
+
+.more { font-size: 0.9375rem; color: var(--muted); }
 
 /* HISTORY */
 .log {

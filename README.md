@@ -36,7 +36,7 @@ Opening `index.html` straight from disk mostly works, but some browsers block fo
 
 **Codeberg Pages.** Codeberg is a non-profit forge run on free software.
 1. Create a public repository named `pages` and push these files to a branch called `pages`.
-2. In the repository settings, add a webhook pointing at `https://yourname.codeberg.page/`, with the branch filter set to `pages`. Each push to that branch then publishes the site at `yourname.codeberg.page`.
+2. In the repository settings, add a webhook pointing at `https://wingback.codeberg.page/`, with the branch filter set to `pages`. Each push to that branch then publishes the site at `wingback.codeberg.page`.
 3. For a custom domain, point a `CNAME` at `codeberg.page` (use `A`/`AAAA` records instead if your domain has DNSSEC). Add a `TXT` record named `_git-pages-repository.example.com` that contains the repository's HTTPS clone URL. The old `.domains` file isn't used anymore.
 
 Codeberg Pages also reads `_headers`, but only accepts certain headers. As of August 2026 the list covers Content-Security-Policy, Permissions-Policy, Referrer-Policy and X-Frame-Options. If a deploy complains, trim `_headers` down to those. Details are at [docs.codeberg.org/codeberg-pages](https://docs.codeberg.org/codeberg-pages/).
