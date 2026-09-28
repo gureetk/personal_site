@@ -65,7 +65,7 @@
           <li><a href="https://github.com/gureetk">github</a></li>
           <li><a href="https://www.linkedin.com/in/gureetk">linkedin</a></li>
           <li><a href="mailto:hello@gureet.ca">email</a></li>
-          <li><a href="resume.pdf">résumé</a></li>
+          <!-- Back once resume.pdf is in the repo: <li><a href="resume.pdf">résumé</a></li> -->
         </ul>
       </div>
     </section>
@@ -278,14 +278,16 @@
       <h2 id="h-files">FILES</h2>
       <div class="sh-body">
         <dl class="files">
+          <!-- Back once resume.pdf is in the repo:
           <div>
             <dt><a href="resume.pdf">resume.pdf</a></dt>
             <dd>Résumé, one page.</dd>
           </div>
+          -->
           <div>
             <dt><a href="https://codeberg.org/gureetk.keys">~/.ssh/id_ed25519.pub</a></dt>
             <dd>
-              <p>SSH public key, also at codeberg.org/gureetk.keys and github.com/gureetk.keys. Its fingerprint, drawn the way <code>ssh-keygen</code> draws it:</p>
+              <p>SSH public key, also at codeberg.org/gureetk.keys and github.com/gureetk.keys. It also signs commits, so they show as Verified on both. Its fingerprint, drawn the way <code>ssh-keygen</code> draws it:</p>
               <!-- From: ssh-keygen -lv -E sha256 -f ~/.ssh/id_ed25519.pub -->
               <figure class="randomart">
 <pre aria-hidden="true"><span class="ra-frame">+--[ED25519 256]--+</span>
@@ -326,7 +328,8 @@
     <section class="sh" id="bugs" aria-labelledby="h-bugs">
       <h2 id="h-bugs">BUGS</h2>
       <div class="sh-body prose">
-        <p>Known to disappear down rabbit holes for days at a time. It was DNS.</p>
+        <p>Known to disappear down rabbit holes for days at a time.</p>
+        <p>Once gave AdGuard Home so many overlapping blocklists that every refresh overloaded its container, and DNS stopped answering. Pruning the redundant lists fixed it. It was DNS.</p>
         <p>Found a real one? Please report it the way <a href=".well-known/security.txt">security.txt</a> describes.</p>
       </div>
     </section>

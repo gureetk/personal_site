@@ -26,12 +26,12 @@ It's plain HTML, CSS and JavaScript. There's no framework, no build step, no dep
 
 ## Make it yours
 
-1. **What's filled in.** Your name, the `gureet(8)` handle, the `gureet.ca` domain (including the deploy configs and `security.txt`), your email (`hello@gureet.ca`) and your accounts, which are `gureetk` on Codeberg, GitHub and LinkedIn. FastFahr links to `arkelziko/fast-fahr` because the repo lives on a teammate's account. The AUTHOR section links the site's source at `codeberg.org/gureetk/pages`, which is the repository name Codeberg Pages uses. What's left is the résumé.
+1. **What's filled in.** Your name, the `gureet(8)` handle, the `gureet.ca` domain (including the deploy configs and `security.txt`), your email (`hello@gureet.ca`) and your accounts, which are `gureetk` on Codeberg, GitHub and LinkedIn. FastFahr links to `arkelziko/fast-fahr` because the repo lives on a teammate's account. The AUTHOR section links the site's source at `codeberg.org/gureetk/pages`, which is the repository name Codeberg Pages uses. What's left is the résumé. Its two links (under your name and in FILES) are commented out until `resume.pdf` exists.
 2. **Projects.** Lead each entry with what it does and what came of it. On team projects, say which part was yours, the way FastFahr's "My part" does. Unfinished work gets `<span class="tag">in progress</span>` after its name, as wglink has; take the tag off once there's a release.
 3. **History.** Add jobs, clubs, CTF teams and certifications as they come, newest first.
 4. **Environment.** This is your homelab: the diagram, the entries under it and the table of services. Say what runs and why. Leave out IPs, hostnames, versions, and which services are reachable from the internet. The diagram comes in two drawings, a wide one for desktops and a stacked one for phones. Both live as plain ASCII in `tools/diagram.py`: edit them there, then run `python3 tools/diagram.py` to color them and write them into the page.
 5. **Status line.** Under your name, the line with the green light. Change it, or delete the `<p class="status">` element.
-6. **Résumé.** Put `resume.pdf` in the root folder with its metadata stripped, because PDFs often carry your username, software versions and file paths. On Fedora, install the tools with `sudo dnf install perl-Image-ExifTool qpdf poppler-utils`, then run this on the file you exported:
+6. **Résumé.** Put `resume.pdf` in the root folder with its metadata stripped, then uncomment its two links in `index.html`. Stripping matters because PDFs often carry your username, software versions and file paths. On Fedora, install the tools with `sudo dnf install perl-Image-ExifTool qpdf poppler-utils`, then run this on the file you exported:
 
    ```sh
    exiftool -all:all= -PDF:Title="Gureet Kharod, résumé" -o stripped.pdf resume-export.pdf
