@@ -1,18 +1,5 @@
-# Security headers for hosts that read a _headers file (Cloudflare Pages, Netlify,
-# Codeberg Pages). Codeberg only accepts some headers: Content-Security-Policy,
-# Permissions-Policy, Referrer-Policy and X-Frame-Options, as of August 2026.
-# GitHub Pages ignores this file; the CSP <meta> tag in the HTML still applies
-# there. For your own server, see deploy/.
-
 /*
   Content-Security-Policy: default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; upgrade-insecure-requests
-  Strict-Transport-Security: max-age=63072000; includeSubDomains
-  X-Content-Type-Options: nosniff
   Referrer-Policy: no-referrer
   Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=(), browsing-topics=()
-  Cross-Origin-Opener-Policy: same-origin
-  Cross-Origin-Resource-Policy: same-origin
   X-Frame-Options: DENY
-
-/assets/fonts/*
-  Cache-Control: public, max-age=31536000, immutable

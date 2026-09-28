@@ -16,7 +16,7 @@ It's plain HTML, CSS and JavaScript. There's no framework, no build step, no dep
 │   ├── fonts/                  self-hosted woff2 files and their OFL licenses
 │   └── favicon.svg
 ├── .well-known/security.txt    RFC 9116 security contact
-├── _headers                    security headers for Cloudflare Pages and Netlify
+├── _headers                    security headers for Codeberg Pages
 ├── deploy/Caddyfile            self-hosting with Caddy (automatic HTTPS)
 ├── deploy/nginx.conf           self-hosting with nginx
 ├── tools/diagram.py            redraws the homelab diagram in index.html
@@ -62,15 +62,17 @@ Opening `index.html` straight from disk mostly works, but some browsers block fo
 ## Deploy
 
 **Codeberg Pages.** Codeberg is a non-profit forge run on free software.
-1. Create a public repository named `pages` and push these files to a branch called `pages`.
-2. In the repository settings, add a webhook pointing at `https://gureetk.codeberg.page/`, with the branch filter set to `pages`. Each push to that branch then publishes the site at `gureetk.codeberg.page`.
+1. Create an empty public repository named `pages`: no README, license or `.gitignore`. Push these files to a branch called `pages`.
+2. In the repository, go to Settings → Webhooks → Add webhook → Forgejo. Set the target URL to `https://gureetk.codeberg.page/` and the branch filter to `pages`. Each push to that branch then publishes the site at `gureetk.codeberg.page`. Skip the "Test delivery" button: it always fails for Pages webhooks. Push instead and check the site.
 3. `gureet.ca` is a bare domain, and a bare domain can't have a `CNAME`. Give it the `A` and `AAAA` records from [Codeberg's custom-domain page](https://docs.codeberg.org/codeberg-pages/using-custom-domain/) instead (in September 2026: `217.197.84.141` and `2a0a:4580:103f:c0de::2`). An `ALIAS` record also works if your DNS host has them, but not in a DNSSEC-signed zone. Then add a `TXT` record named `_git-pages-repository.gureet.ca` that contains the repository's HTTPS clone URL. The old `.domains` file isn't used anymore.
 
-Codeberg Pages also reads `_headers`, but only accepts certain headers. As of August 2026 the list covers Content-Security-Policy, Permissions-Policy, Referrer-Policy and X-Frame-Options. If a deploy complains, trim `_headers` down to those. Details are at [docs.codeberg.org/codeberg-pages](https://docs.codeberg.org/codeberg-pages/).
+A project site such as `kitae.gureet.ca` works the same way from its own repository: a `pages` branch, a webhook to `https://gureetk.codeberg.page/kitae/`, a `CNAME` from `kitae.gureet.ca` to `codeberg.page`, and a `TXT` record named `_git-pages-repository.kitae.gureet.ca` with that repository's clone URL.
+
+`_headers` sets the security headers Codeberg Pages accepts: Content-Security-Policy, Permissions-Policy, Referrer-Policy and X-Frame-Options. It can't send HSTS or the other headers in `deploy/`. Details are at [docs.codeberg.org/codeberg-pages](https://docs.codeberg.org/codeberg-pages/).
 
 **GitHub Pages.** Create a repository named `gureetk.github.io` and push these files. Then go to Settings → Pages and pick "Deploy from a branch" with `main` and `/ (root)`. The `.nojekyll` file makes sure `.well-known/` gets published. GitHub Pages can't send custom headers, so the Content Security Policy comes from the `<meta>` tag in the HTML.
 
-**Cloudflare Pages or Netlify.** Both read `_headers`, so you get the full header set, including HSTS and `frame-ancestors`. There's no build command, and the output directory is the repository root.
+**Cloudflare Pages or Netlify.** Both read `_headers` and accept more headers than Codeberg, so copy HSTS and the rest in from `deploy/Caddyfile`. There's no build command, and the output directory is the repository root.
 
 **Your own server.** A VPS or a box in your homelab works. `deploy/Caddyfile` gets you HTTPS with no extra setup. `deploy/nginx.conf` explains the one `add_header` gotcha that catches most people. After deploying, check the headers with [securityheaders.com](https://securityheaders.com) and [MDN HTTP Observatory](https://developer.mozilla.org/en-US/observatory).
 
