@@ -26,7 +26,7 @@ It's plain HTML, CSS and JavaScript. There's no framework, no build step, no dep
 
 ## Make it yours
 
-1. **What's filled in.** Your name, the `gureet(8)` handle, the `gureet.ca` domain (including the deploy configs and `security.txt`), and your accounts: Codeberg `wingback`, GitHub `gureett`, LinkedIn `gureetk`, and `hello@gureet.ca`. FastFahr links to `arkelziko/fast-fahr` because the repo lives on a teammate's account. The AUTHOR section links the site's source at `codeberg.org/wingback/pages`, which is the repository name Codeberg Pages uses. What's left is the résumé and the SSH randomart.
+1. **What's filled in.** Your name, the `gureet(8)` handle, the `gureet.ca` domain (including the deploy configs and `security.txt`), your email (`hello@gureet.ca`) and your accounts, which are `gureetk` on Codeberg, GitHub and LinkedIn. FastFahr links to `arkelziko/fast-fahr` because the repo lives on a teammate's account. The AUTHOR section links the site's source at `codeberg.org/gureetk/pages`, which is the repository name Codeberg Pages uses. What's left is the résumé and the SSH randomart.
 2. **Projects.** Lead each entry with what it does and what came of it. On team projects, say which part was yours, the way FastFahr's "My part" does. Unfinished work gets `<span class="tag">in progress</span>` after its name, as wglink has; take the tag off once there's a release.
 3. **History.** Add jobs, clubs, CTF teams and certifications as they come, newest first.
 4. **Environment.** This is your homelab: the diagram, the entries under it and the table of services. Say what runs and why. Leave out IPs, hostnames, versions, and which services are reachable from the internet. The diagram comes in two drawings, a wide one for desktops and a stacked one for phones. Both live as plain ASCII in `tools/diagram.py`: edit them there, then run `python3 tools/diagram.py` to color them and write them into the page.
@@ -63,12 +63,12 @@ Opening `index.html` straight from disk mostly works, but some browsers block fo
 
 **Codeberg Pages.** Codeberg is a non-profit forge run on free software.
 1. Create a public repository named `pages` and push these files to a branch called `pages`.
-2. In the repository settings, add a webhook pointing at `https://wingback.codeberg.page/`, with the branch filter set to `pages`. Each push to that branch then publishes the site at `wingback.codeberg.page`.
+2. In the repository settings, add a webhook pointing at `https://gureetk.codeberg.page/`, with the branch filter set to `pages`. Each push to that branch then publishes the site at `gureetk.codeberg.page`.
 3. `gureet.ca` is a bare domain, and a bare domain can't have a `CNAME`. Give it the `A` and `AAAA` records from [Codeberg's custom-domain page](https://docs.codeberg.org/codeberg-pages/using-custom-domain/) instead (in September 2026: `217.197.84.141` and `2a0a:4580:103f:c0de::2`). An `ALIAS` record also works if your DNS host has them, but not in a DNSSEC-signed zone. Then add a `TXT` record named `_git-pages-repository.gureet.ca` that contains the repository's HTTPS clone URL. The old `.domains` file isn't used anymore.
 
 Codeberg Pages also reads `_headers`, but only accepts certain headers. As of August 2026 the list covers Content-Security-Policy, Permissions-Policy, Referrer-Policy and X-Frame-Options. If a deploy complains, trim `_headers` down to those. Details are at [docs.codeberg.org/codeberg-pages](https://docs.codeberg.org/codeberg-pages/).
 
-**GitHub Pages.** Create a repository named `gureett.github.io` and push these files. Then go to Settings → Pages and pick "Deploy from a branch" with `main` and `/ (root)`. The `.nojekyll` file makes sure `.well-known/` gets published. GitHub Pages can't send custom headers, so the Content Security Policy comes from the `<meta>` tag in the HTML.
+**GitHub Pages.** Create a repository named `gureetk.github.io` and push these files. Then go to Settings → Pages and pick "Deploy from a branch" with `main` and `/ (root)`. The `.nojekyll` file makes sure `.well-known/` gets published. GitHub Pages can't send custom headers, so the Content Security Policy comes from the `<meta>` tag in the HTML.
 
 **Cloudflare Pages or Netlify.** Both read `_headers`, so you get the full header set, including HSTS and `frame-ancestors`. There's no build command, and the output directory is the repository root.
 
