@@ -81,8 +81,7 @@
     <section class="sh" id="description" aria-labelledby="h-description">
       <h2 id="h-description">DESCRIPTION</h2>
       <div class="sh-body prose">
-        <p><b>gureet</b> studies computer science at McMaster University and is most at home in the layers people rarely see: operating systems, networks, and the infrastructure everything else runs on. That interest started in 2022 with a Raspberry Pi running two services, and the homelab is now on its third version (see <a href="#environment">ENVIRONMENT</a>). The plan is a career in security or infrastructure, ideally where the two meet, with plenty of curiosity left over for the rest of the field.</p>
-        <p><b>gureet</b> daily-drives Fedora Linux and GrapheneOS and lives as de-Googled a life as possible: free and open-source software first, offline tools where the task allows, and self-hosted services for the rest. The software people depend on should be free to read, change and share.</p>
+        <p><b>gureet</b> studies computer science at McMaster University and is most at home in the layers people rarely see: operating systems, networks and the infrastructure everything else runs on. <b>gureet</b> has run a homelab since 2022 and is aiming for security or infrastructure, ideally where the two meet, while staying curious about the rest of the field.</p>
       </div>
     </section>
 
@@ -100,7 +99,7 @@
           </div>
           <div class="opt" id="opt-free-software">
             <dt>--free-software</dt>
-            <dd>Tools that can be read, audited and fixed, preferably ones that keep working offline. Most of the code lives on <a href="https://codeberg.org/wingback">Codeberg</a>.</dd>
+            <dd>Fedora Linux on the desktop, and tools that can be read, audited and fixed, preferably ones that keep working offline. Most of the code lives on <a href="https://codeberg.org/wingback">Codeberg</a>.</dd>
           </div>
           <div class="opt" id="opt-privacy">
             <dt>--privacy</dt>
@@ -115,7 +114,7 @@
     <section class="sh" id="environment" aria-labelledby="h-environment">
       <h2 id="h-environment">ENVIRONMENT</h2>
       <div class="sh-body">
-        <p class="lede"><b>gureet</b> runs in a homelab, now on its third version. The rule is to self-host everything possible, to stay in control of personal data and secure as much as possible locally.</p>
+        <p class="lede"><b>gureet</b> runs in a homelab, now on its third version. The rule is to self-host everything possible and keep personal data under local control.</p>
         <figure class="diagram">
           <!-- Both diagrams are generated from tools/diagram.py: edit the ASCII there, then run it. -->
 <pre data-diagram="wide" role="img" aria-label="Three ways into the homelab. From the internet, a select few services go through a VPS, where HAProxy passes TLS through without decrypting it and a CrowdSec bouncer blocks attackers, then over WireGuard to Caddy. At home, trusted devices reach Caddy directly through split-horizon DNS. Remote devices come in over Tailscale, with Tailnet Lock on, through a separate container that hands traffic to Caddy. Caddy ends TLS while CrowdSec reads its logs, and Anubis puts a proof-of-work check in front of the public services. Traffic continues over WireGuard to the services.">                                  <span class="dg-box">internet</span>
@@ -169,35 +168,27 @@
         <dl class="opts env">
           <div class="opt">
             <dt>CLUSTER</dt>
-            <dd>Two Proxmox VE nodes, plus the Raspberry Pi 3B+ from v1, now a QDevice whose tie-breaking vote keeps the cluster in quorum when a node goes down. Caddy, Pocket ID, Vaultwarden, OpenCloud, Immich and Stirling PDF get full VMs; everything else runs in LXC containers to save RAM.</dd>
+            <dd>Two Proxmox VE nodes, plus the Pi from v1 as a QDevice whose tie-breaking vote keeps the cluster in quorum when a node is down. Some services get full VMs; the rest run in LXC containers to save RAM.</dd>
           </div>
           <div class="opt">
             <dt>POWER</dt>
-            <dd>Everything is on a UPS, including the OpenWrt router and the fiber ONT, so the network and some services stay up through an outage. When the power goes out, NUT shuts down the power-hungry node to stretch the battery while the low-wattage node keeps running. WOLNUT, on the Pi, wakes the big node back up when power returns.</dd>
+            <dd>Everything is on a UPS, router and ONT included, so the network and the low-wattage node ride out an outage. NUT shuts down the power-hungry node to save battery, and WOLNUT on the Pi wakes it when power returns.</dd>
           </div>
           <div class="opt">
             <dt>EDGE</dt>
-            <dd>A VPS is the only way in from the internet, and only for a select few services. HAProxy passes TLS through without decrypting it, so the VPS never sees plaintext, and sends it over WireGuard to Caddy at home. CrowdSec reads Caddy's logs, and its bouncer on the VPS blocks attackers before they reach the house. Where it won't break an app's clients, Anubis also stands in front of the public services and makes each browser solve a small proof-of-work challenge first, which keeps AI scrapers and other bots out.</dd>
-          </div>
-          <div class="opt">
-            <dt>TRANSPORT</dt>
-            <dd>VMs and containers talk to each other only through WireGuard tunnels, so nothing else on the network can read the traffic between them.</dd>
-          </div>
-          <div class="opt">
-            <dt>NETWORK</dt>
-            <dd>OpenWrt splits the network into subnets for trusted devices, servers, IoT and guests. Trusted devices can open connections to the servers; the servers can only reply. Internet traffic leaves through a VPN provider.</dd>
-          </div>
-          <div class="opt">
-            <dt>DNS</dt>
-            <dd>AdGuard Home with Unbound blocks ads and known-malicious domains. Split-horizon DNS sends devices at home straight to Caddy, so local traffic never leaves the house, and Unbound's own queries go out through the VPN, so the ISP never sees a lookup. A local NTP server keeps the clocks honest.</dd>
+            <dd>A VPS is the only way in from the internet, and only for a select few services. It passes TLS through unopened, so it never sees plaintext, and CrowdSec blocks attackers there before they reach the house. Anubis turns away AI scrapers wherever it won't break anything.</dd>
           </div>
           <div class="opt">
             <dt>ACCESS</dt>
-            <dd>Everything that isn't public is reachable only over Tailscale, which runs in its own container and hands traffic to Caddy. Tailnet Lock is on, so no device joins the tailnet unless a trusted device signs it, even if Tailscale's own servers were compromised. Pocket ID handles sign-in with passkeys instead of passwords.</dd>
+            <dd>Away from home, everything else is reachable only over Tailscale. Tailnet Lock means no device joins without a trusted device's signature, even if Tailscale's own servers were compromised. Pocket ID handles sign-in with passkeys.</dd>
           </div>
           <div class="opt">
-            <dt>MONITORING</dt>
-            <dd>Prometheus collects the metrics and Grafana draws them.</dd>
+            <dt>NETWORK</dt>
+            <dd>OpenWrt splits trusted devices, servers, IoT and guests into separate subnets; servers can answer trusted devices but never start a connection. VMs and containers talk to each other only over WireGuard, and internet traffic leaves through a VPN provider.</dd>
+          </div>
+          <div class="opt">
+            <dt>DNS</dt>
+            <dd>AdGuard Home and Unbound block ads and known-malicious domains. Split-horizon DNS keeps local traffic inside the house, and Unbound's queries leave through the VPN, so the ISP never sees a lookup. A local NTP server keeps the clocks honest.</dd>
           </div>
           <div class="opt">
             <dt>BACKUPS</dt>
@@ -213,8 +204,7 @@
             <tr><td>caddy</td><td>vm</td><td>reverse proxy; TLS ends here</td></tr>
             <tr><td>pocket-id</td><td>vm</td><td>passkey sign-in (OIDC)</td></tr>
             <tr><td>vaultwarden</td><td>vm</td><td>passwords</td></tr>
-            <tr><td>opencloud</td><td>vm</td><td>files, instead of Google Drive</td></tr>
-            <tr><td>euro-office</td><td>vm</td><td>office documents, in the browser</td></tr>
+            <tr><td>opencloud + euro-office</td><td>vm</td><td>files and office documents, instead of Google Drive</td></tr>
             <tr><td>immich</td><td>vm</td><td>photos, instead of Google Photos</td></tr>
             <tr><td>stirling-pdf</td><td>vm</td><td>PDF editing</td></tr>
             <tr><td>jellyfin</td><td>lxc</td><td>movies, shows and music</td></tr>
@@ -240,14 +230,14 @@
           <div class="opt">
             <dt><a href="https://codeberg.org/wingback/kitae">kitae</a></dt>
             <dd>
-              <p>An offline workout journal for Android. Plan your split once as named training days, then pick a day and tick off your sets, with a rest timer and warm-up, failure, drop and rest-pause sets. Every bit of data stays on the phone. A fork of LooKeR's <a href="https://github.com/iamlooker/kenko">Kenko</a> with a Material Design interface.</p>
+              <p>An offline workout journal for Android. Plan your split once as named training days, then pick a day and tick off your sets, with a rest timer. All data stays on the phone. A fork of LooKeR's <a href="https://github.com/iamlooker/kenko">Kenko</a> with a Material Design interface.</p>
               <p class="meta"><span>kotlin · android · gplv3</span><span class="plinks"><a href="https://codeberg.org/wingback/kitae">source</a><a href="https://codeberg.org/wingback/kitae/releases">releases</a></span></p>
             </dd>
           </div>
           <div class="opt">
             <dt><a href="https://github.com/arkelziko/fast-fahr">fastfahr</a></dt>
             <dd>
-              <p>A marketplace for buying and selling German cars, built by a team of four. Listings with up to seven photos, search filters for vehicle specs, bookmarks, and direct messages between buyers and sellers, plus accounts with email password resets. A React single-page app on a PHP and MySQL back end.</p>
+              <p>A marketplace for buying and selling German cars, built by a team of four, with photo listings, search by vehicle specs, bookmarks and buyer–seller messages. A React single-page app on a PHP and MySQL back end.</p>
               <p><b>My part:</b> user authentication and profile management.</p>
               <ul class="did">
                 <li>Passwords hashed with bcrypt, and a fresh session ID at every login.</li>
@@ -261,7 +251,7 @@
           <div class="opt">
             <dt><a href="https://codeberg.org/wingback/wglink">wglink</a><span class="tag">in progress</span></dt>
             <dd>
-              <p>A lightweight Go command-line tool with a terminal UI for creating, linking and managing WireGuard tunnels between machines on a LAN, so nothing else on the network can read the traffic between them. Built for LANs, though it can work across the internet too.</p>
+              <p>A lightweight tool for creating, linking and managing WireGuard tunnels between machines on a LAN, so nothing else on the network can read their traffic. It can work across the internet too.</p>
               <p class="meta"><span>go · wireguard · cli + tui</span><span class="plinks"><a href="https://codeberg.org/wingback/wglink">source</a></span></p>
             </dd>
           </div>
@@ -279,7 +269,7 @@
           <li><span class="when">2025 – now</span><span class="what"><b>Homelab v3.</b> A two-node Proxmox cluster with a Raspberry Pi QDevice and a VPS edge. See <a href="#environment">ENVIRONMENT</a>.</span></li>
           <li><span class="when">2024 – now</span><span class="what"><b>Honours Computer Science Co-op (B.A.Sc.)</b>, McMaster University. Third year.</span></li>
           <li><span class="when">2023 – 2025</span><span class="what"><b>Homelab v2.</b> A single Ubuntu server.</span></li>
-          <li><span class="when">2022 – 2023</span><span class="what"><b>Homelab v1.</b> A Raspberry Pi 3B+ running two services. The same Pi is still running, now as v3's QDevice.</span></li>
+          <li><span class="when">2022 – 2023</span><span class="what"><b>Homelab v1.</b> A Raspberry Pi 3B+ running two services. It's still running, as v3's QDevice.</span></li>
         </ul>
       </div>
     </section>
@@ -352,7 +342,7 @@
 
   <footer class="man-foot">
     <span>gureet.ca</span>
-    <span class="mid"><time datetime="2026-09-27">September 27, 2026</time></span>
+    <span class="mid"><time datetime="2026-09-28">September 28, 2026</time></span>
     <span>GUREET(8)</span>
   </footer>
 </div>
