@@ -1,17 +1,8 @@
 #!/usr/bin/env python3
-"""Redraw the homelab diagrams in index.html.
+"""Color the homelab diagrams and write them into index.html.
 
-Edit the ASCII art below, then run from the repo root:
-
-    python3 tools/diagram.py
-
-The script colors the art and writes it into index.html, inside
-<pre data-diagram="wide"> (screens 800px and up) and
-<pre data-diagram="narrow"> (phones). Keep WIDE within 73 columns and
-NARROW within 44, or they stop fitting.
-
-Coloring rules: box titles and SOURCES are amber, LINKS are green, the
-first word in a box row is bright, and lines and arrows are dim.
+Edit WIDE (800px and up, at most 73 columns) or NARROW (phones, at most 44),
+then run from the repo root: python3 tools/diagram.py
 """
 import html
 import re

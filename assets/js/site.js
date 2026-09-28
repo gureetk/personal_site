@@ -1,5 +1,5 @@
-/* site.js: the pager prompt, less-style keys, the help screen, theme switching
-   and the name's decrypt effect. The page is complete without any of this. */
+/* Pager prompt, less keys, help screen, theme toggle and the name's decrypt
+   effect. The page works without any of it. */
 (() => {
   "use strict";
 
@@ -26,11 +26,11 @@
   const pageName = prompt?.dataset.page || "gureet(8)";
   const handle = prompt?.dataset.handle || "gureet";
 
-  // Controls that only work with JavaScript start out hidden in the HTML.
+  // JS-only controls start hidden in the HTML.
   $$("[data-theme-toggle]").forEach((el) => { el.hidden = false; });
   if (prompt) prompt.hidden = false;
 
-  /* ── Theme ─────────────────────────────────────────────── */
+  /* ── Theme ──────────────────────────────────────────────── */
   const themeButtons = $$("[data-theme-toggle]");
   const currentTheme = () => root.dataset.theme || (systemDark.matches ? "dark" : "light");
 
@@ -56,11 +56,11 @@
 
   themeButtons.forEach((btn) => btn.addEventListener("click", toggleTheme));
   systemDark.addEventListener("change", themeChanged);
-  // Also catches a theme stamped on <html> by whatever hosts the page.
+  // Also catches data-theme set by whatever hosts the page.
   new MutationObserver(themeChanged).observe(root, { attributes: true, attributeFilter: ["data-theme"] });
   paintThemeButtons();
 
-  /* ── Pager prompt: "Manual page gureet(8) line 12/240" ─ */
+  /* ── Pager prompt ───────────────────────────────────────── */
   let message = "";
   let messageUntil = 0;
 
@@ -101,7 +101,7 @@
   window.addEventListener("resize", renderPrompt);
   renderPrompt();
 
-  // less prints its messages in the prompt line, so this page does too.
+  // Like less, messages appear in the prompt line.
   function say(text, ms = 3800) {
     message = text;
     messageUntil = performance.now() + ms;
@@ -110,7 +110,7 @@
     setTimeout(renderPrompt, ms + 30);
   }
 
-  /* ── Help screen ───────────────────────────────────────── */
+  /* ── Help screen ────────────────────────────────────────── */
   function openHelp() {
     if (help && !help.open && typeof help.showModal === "function") help.showModal();
   }
@@ -118,12 +118,12 @@
 
   prompt?.addEventListener("click", openHelp);
   help?.addEventListener("click", (e) => {
-    if (e.target === help) closeHelp(); // a click on the backdrop
+    if (e.target === help) closeHelp(); // backdrop click
   });
   $$("[data-close]", help || document).forEach((btn) => btn.addEventListener("click", closeHelp));
   $$(".help-toc a", help || document).forEach((a) => a.addEventListener("click", closeHelp));
 
-  /* ── Keys ──────────────────────────────────────────────── */
+  /* ── Keys ───────────────────────────────────────────────── */
   const keysBox = $("#opt-keys");
   let keysOn = store.get("keys") !== "off";
   if (keysBox) {
@@ -209,7 +209,7 @@
     }
   });
 
-  /* ── The name decrypts itself ──────────────────────────── */
+  /* ── Name decrypt effect ────────────────────────────────── */
   const HEX = "0123456789abcdef";
   const nameEl = $("[data-scramble]");
 

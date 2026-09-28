@@ -1,12 +1,7 @@
-/* cipher.js: the background. A slowly churning hexdump with encrypted packets
-   drifting through it, and a lens that follows the cursor and "decrypts" the
-   plaintext hidden underneath.
-
-   The field is an endless strip that scrolls with the page at SCROLL_SPEED, so
-   scrolling under a resting cursor slides new plaintext into the lens. When the
-   cursor leaves or rests for a while, the lens wanders on its own.
-
-   Edit PHRASES to change what people find. Keep them short and lowercase. */
+/* The background: a churning hexdump with packets drifting through it, and a
+   lens that follows the cursor and reveals the plaintext underneath. When the
+   cursor rests or leaves, the lens wanders. Edit PHRASES (short, lowercase) to
+   change what people find. */
 (() => {
   "use strict";
 
@@ -59,13 +54,12 @@
     "wg-quick up wg0",
   ];
 
-  /** How fast the field scrolls compared with the page: 0 keeps it still,
-      1 moves it with the text. Below 1 it reads as sitting behind the page. */
+  // Field speed relative to the page: 0 is still, 1 moves with the text.
   const SCROLL_SPEED = 0.5;
 
   const canvas = document.getElementById("cipher");
   if (!canvas || !canvas.getContext) return;
-  if (getComputedStyle(canvas).display === "none") return; // e.g. prefers-contrast: more
+  if (getComputedStyle(canvas).display === "none") return; // hidden by prefers-contrast: more
 
   const root = document.documentElement;
   const ctx = canvas.getContext("2d");
@@ -98,7 +92,7 @@
 
   const mod = (n, m) => ((n % m) + m) % m;
 
-  // Motion-sensitive visitors get a background that stays put while they scroll.
+  // Still for visitors who prefer reduced motion.
   const fieldOffset = () => (reduce.matches ? 0 : Math.max(0, window.scrollY) * SCROLL_SPEED);
 
   function mulberry32(a) {
@@ -111,7 +105,7 @@
     };
   }
 
-  // Stable per-cell noise, so the texture doesn't reshuffle on every repaint.
+  // Stable per-cell noise, so the texture doesn't reshuffle on repaint.
   function hash2(x, y) {
     let h = Math.imul(x | 0, 374761393) + Math.imul(y | 0, 668265263);
     h = Math.imul(h ^ (h >>> 13), 1274126177);
@@ -132,7 +126,7 @@
       `rgba(${colors.field}, ${(colors.alpha * ((i + 0.5) / LEVELS) * 1.45).toFixed(4)})`);
   }
 
-  // The text column stays calm: the field (and the lens) dim behind it.
+  // Dim the field and lens behind the text column.
   function computeWeights() {
     colWeight = new Float32Array(cols);
     lensWeight = new Float32Array(cols);
@@ -160,9 +154,8 @@
       : { x: W * 0.5, y: H * 0.45, ax: W * 0.36, ay: H * 0.3 };
   }
 
-  // The plaintext under the field. Phrases sit on every other row with random
-  // gaps; each row is laid out from its own seed, so they never repeat however
-  // far the page scrolls.
+  // Plaintext for field row R: phrases on every other row, seeded per row so
+  // nothing repeats however far the page scrolls.
   function plainRow(R) {
     if ((R & 1) === 0) return null;
     let row = rowCache.get(R);
@@ -181,8 +174,7 @@
     return row;
   }
 
-  // The hexdump is painted once into a tile half again as tall as the screen,
-  // and the tile wraps around as the field scrolls.
+  // Painted once into a tile 1.5 screens tall that wraps as the field scrolls.
   function paintBase() {
     bctx.setTransform(1, 0, 0, 1, 0, 0);
     bctx.clearRect(0, 0, base.width, base.height);
@@ -273,7 +265,7 @@
     });
   }
 
-  // A few hex digits change every tick, so the field never quite sits still.
+  // Change a few digits each tick so the field never sits still.
   function churn(count) {
     for (let k = 0; k < count; k++) {
       const x = (Math.random() * cols) | 0;
@@ -287,7 +279,7 @@
     }
   }
 
-  // Lay the tile down at the current scroll position, wrapping as needed.
+  // Blit the tile at the current scroll offset, wrapping.
   function drawField() {
     const start = mod(off, tileRows * lh);
     ctx.setTransform(1, 0, 0, 1, 0, 0);
@@ -326,7 +318,7 @@
   function drawLens(now) {
     const { x: lx, y: ly, r } = lens;
 
-    // Clear the ciphertext under the lens, with a soft edge.
+    // Erase the ciphertext under the lens, with a soft edge.
     ctx.save();
     ctx.globalCompositeOperation = "destination-out";
     const g = ctx.createRadialGradient(lx, ly, 0, lx, ly, r * 1.08);
@@ -339,8 +331,8 @@
     ctx.fill();
     ctx.restore();
 
-    // Then draw what was underneath, resolving toward the center. Rows are
-    // rows of the field, so the text moves with it as the page scrolls.
+    // Draw the plaintext, sharper toward the center. Rows are field rows, so
+    // the text scrolls with the field.
     const tick = Math.floor(now / 90);
     const x0 = Math.max(0, Math.floor((lx - r * 1.15) / cw));
     const x1 = Math.min(cols - 1, Math.ceil((lx + r * 1.15) / cw));
@@ -383,8 +375,7 @@
 
   function frame(now) {
     raf = requestAnimationFrame(frame);
-    // While the page scrolls, draw every frame so the field keeps pace with the
-    // text; otherwise about 33 fps is plenty.
+    // Every frame while scrolling, so the field keeps pace; ~33 fps otherwise.
     const target = fieldOffset();
     const scrolling = target !== off;
     if (!scrolling && now - lastFrame < 30) return;
@@ -420,7 +411,7 @@
     raf = 0;
   }
 
-  // With reduced motion there is no loop: repaint only when the pointer moves.
+  // Reduced motion has no loop: repaint only when the pointer moves.
   let pending = false;
   function renderSoon() {
     if (pending) return;
@@ -458,8 +449,7 @@
     }
   }, { passive: true });
 
-  // Scrolling with a resting mouse keeps the lens under the cursor instead of
-  // letting it drift off, so the field slides through it.
+  // Scrolling counts as activity, so the lens stays under a resting cursor.
   window.addEventListener("scroll", () => {
     if (pointerInside) lastPointer = performance.now();
   }, { passive: true });
@@ -483,7 +473,7 @@
     renderSoon();
   });
 
-  // Anything that moves the text column can ask for a rebuild with this event.
+  // Fired by anything that moves the text column.
   window.addEventListener("layoutchange", () => {
     if (!cols) return;
     lens.placed = false;

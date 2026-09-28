@@ -1,7 +1,6 @@
-/* gureet(8): a man page in a pager, over an encrypted hexdump.
-   Colors live in the tokens below; components only ever read tokens. */
+/* gureet(8). Colors are tokens on :root; components only read tokens. */
 
-/* ── Fonts (self-hosted, SIL OFL 1.1; licenses in assets/fonts) ── */
+/* ── Fonts: self-hosted, SIL OFL 1.1 ──────────────────────── */
 @font-face {
   font-family: "Iosevka";
   src: url("../fonts/iosevka-latin-700-normal.woff2") format("woff2");
@@ -38,7 +37,7 @@
   font-display: swap;
 }
 
-/* ── Tokens: paper (light) ─────────────────────────────────── */
+/* ── Tokens: paper (light) ────────────────────────────────── */
 :root {
   --bg: #eeeeea;
   --bg-raise: #e6e5df;
@@ -68,14 +67,14 @@
   --font-body: "Atkinson Hyperlegible Next", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
 
   --gutter: clamp(16px, 5.5vw, 96px);
-  --frame: 1440px;    /* wider screens center this frame; the background still fills them */
-  --indent: 3.6rem;   /* man(1) indents section bodies by 7 columns */
+  --frame: 1440px;    /* max page width; wider screens center it */
+  --indent: 3.6rem;   /* man(1)'s 7-column body indent */
   --indent-2: 2.6rem;
 
   color-scheme: light;
 }
 
-/* ── Tokens: phosphor (dark) ───────────────────────────────── */
+/* ── Tokens: phosphor (dark) ──────────────────────────────── */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     --bg: #111110;
@@ -102,6 +101,7 @@
   }
 }
 
+/* Dark chosen with the toggle: same values */
 :root[data-theme="dark"] {
   --bg: #111110;
   --bg-raise: #1b1a17;
@@ -126,7 +126,7 @@
   color-scheme: dark;
 }
 
-/* ── Base ──────────────────────────────────────────────────── */
+/* ── Base ─────────────────────────────────────────────────── */
 *,
 *::before,
 *::after { box-sizing: border-box; }
@@ -205,7 +205,7 @@ a:hover { text-decoration-thickness: 2px; }
 
 .skip:focus { transform: none; }
 
-/* ── The encrypted field (drawn by cipher.js) ─────────────── */
+/* ── Background canvas (cipher.js) ────────────────────────── */
 .cipher {
   position: fixed;
   top: 0;
@@ -229,7 +229,7 @@ a:hover { text-decoration-thickness: 2px; }
   .cipher { display: none; }
 }
 
-/* ── Page frame: header line, contents, footer line ───────── */
+/* ── Page frame ───────────────────────────────────────────── */
 .page {
   position: relative;
   z-index: 1;
@@ -293,7 +293,7 @@ a:hover { text-decoration-thickness: 2px; }
 
 .theme-toggle:hover { color: var(--amber); border-color: var(--amber); }
 
-/* ── The manual ────────────────────────────────────────────── */
+/* ── Sections ─────────────────────────────────────────────── */
 .man {
   display: flex;
   flex-direction: column;
@@ -369,7 +369,7 @@ a:hover { text-decoration-thickness: 2px; }
   flex: none;
   width: 0.5rem;
   height: 0.5rem;
-  margin-top: calc((1.5em - 0.5rem) / 2); /* centered on the first line when the text wraps */
+  margin-top: calc((1.5em - 0.5rem) / 2); /* align with the first line */
   border-radius: 50%;
   background: var(--led);
   box-shadow: 0 0 0 3px var(--led-halo), 0 0 10px var(--led);
@@ -390,7 +390,7 @@ a:hover { text-decoration-thickness: 2px; }
   font: 400 0.9375rem/1.5 var(--font-mono);
 }
 
-/* SYNOPSIS: long lines wrap with a hanging indent, like man(1) does */
+/* SYNOPSIS: hanging indent, like man(1) */
 .synopsis {
   padding-left: 4ch;
   text-indent: -4ch;
@@ -420,8 +420,7 @@ a:hover { text-decoration-thickness: 2px; }
 
 .opt dd { margin: 0.2rem 0 0 var(--indent-2); }
 
-/* Only project entries stack several blocks (text, "My part", links). A flex
-   column on the other entries would put each inline link on a line of its own. */
+/* Projects only: on text-only entries a flex column puts inline links on their own lines. */
 .projects dd {
   display: flex;
   flex-direction: column;
@@ -447,7 +446,7 @@ a:hover { text-decoration-thickness: 2px; }
 
 .plinks { display: flex; gap: 1rem; }
 
-/* What I built, inside a team project */
+/* "My part" list in team projects */
 .did {
   display: flex;
   flex-direction: column;
@@ -461,7 +460,7 @@ a:hover { text-decoration-thickness: 2px; }
 
 .did li::marker { color: var(--faint); }
 
-/* Status label next to a project name, e.g. "in progress" */
+/* Label after a project name, e.g. "in progress" */
 .tag {
   display: inline-block;
   margin-left: 0.65rem;
@@ -554,7 +553,7 @@ a:hover { text-decoration-thickness: 2px; }
 
 .colophon { color: var(--muted); font-size: 0.9375rem; }
 
-/* ENVIRONMENT: the homelab */
+/* ENVIRONMENT */
 .lede { max-width: 38rem; }
 
 .diagram {
@@ -569,7 +568,7 @@ a:hover { text-decoration-thickness: 2px; }
   color: var(--text);
 }
 
-/* Two drawings of the same diagram: side arrows need room, so phones get a stacked one. */
+/* Phones get the stacked drawing; the wide one needs room for side arrows. */
 .diagram pre[data-diagram="narrow"] { display: none; }
 
 @media (max-width: 799px) {
@@ -627,7 +626,7 @@ a:hover { text-decoration-thickness: 2px; }
 /* ── Pager prompt (less-style, reverse video) ─────────────── */
 .prompt {
   position: fixed;
-  left: max(0px, calc((100% - var(--frame)) / 2)); /* the frame's bottom-left corner */
+  left: max(0px, calc((100% - var(--frame)) / 2)); /* frame's bottom-left corner */
   bottom: 0;
   z-index: 10;
   max-width: 100%;
@@ -647,7 +646,7 @@ a:hover { text-decoration-thickness: 2px; }
 
 .prompt:hover { background: var(--amber); }
 
-/* ── Help screen ───────────────────────────────────────────── */
+/* ── Help screen ──────────────────────────────────────────── */
 .help {
   width: min(44rem, calc(100% - 2rem));
   max-height: calc(100% - 3rem);
@@ -742,7 +741,7 @@ a:hover { text-decoration-thickness: 2px; }
 
 .check input { accent-color: var(--amber); width: 1rem; height: 1rem; margin: 0; }
 
-/* ── Small screens ─────────────────────────────────────────── */
+/* ── Small screens ────────────────────────────────────────── */
 @media (max-width: 640px) {
   :root {
     --indent: 1rem;
@@ -768,7 +767,7 @@ a:hover { text-decoration-thickness: 2px; }
 
   .diagram pre { font-size: 0.6875rem; }
 
-  /* The services table becomes a list: name and type, then what it's for. */
+  /* Services table as a list: name and type, then purpose. */
   .svc,
   .svc tbody,
   .svc caption { display: block; }
@@ -796,13 +795,13 @@ a:hover { text-decoration-thickness: 2px; }
   .help { padding: 1rem 1.1rem 1.2rem; }
 }
 
-/* ── Motion preferences ────────────────────────────────────── */
+/* ── Motion preferences ───────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   .cursor,
   .led { animation: none; }
 }
 
-/* ── Print: it's a man page, so it prints like one ─────────── */
+/* ── Print ────────────────────────────────────────────────── */
 @media print {
   :root,
   :root:not([data-theme="light"]),
