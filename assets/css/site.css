@@ -418,11 +418,14 @@ a:hover { text-decoration-thickness: 2px; }
   color: var(--ink);
 }
 
-.opt dd {
+.opt dd { margin: 0.2rem 0 0 var(--indent-2); }
+
+/* Only project entries stack several blocks (text, "My part", links). A flex
+   column on the other entries would put each inline link on a line of its own. */
+.projects dd {
   display: flex;
   flex-direction: column;
   gap: 0.35rem;
-  margin: 0.2rem 0 0 var(--indent-2);
 }
 
 .opt:target dt { color: var(--amber); }
