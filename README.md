@@ -26,7 +26,7 @@ It's plain HTML, CSS and JavaScript. There's no framework, no build step, no dep
 
 ## Make it yours
 
-1. **What's filled in.** Your name, the `gureet(8)` handle, the `gureet.ca` domain (including the deploy configs and `security.txt`), your email (`hello@gureet.ca`) and your accounts, which are `gureetk` on Codeberg, GitHub and LinkedIn. FastFahr links to `arkelziko/fast-fahr` because the repo lives on a teammate's account. The AUTHOR section links the site's source at `codeberg.org/gureetk/pages`, which is the repository name Codeberg Pages uses. What's left is the résumé and the SSH randomart.
+1. **What's filled in.** Your name, the `gureet(8)` handle, the `gureet.ca` domain (including the deploy configs and `security.txt`), your email (`hello@gureet.ca`) and your accounts, which are `gureetk` on Codeberg, GitHub and LinkedIn. FastFahr links to `arkelziko/fast-fahr` because the repo lives on a teammate's account. The AUTHOR section links the site's source at `codeberg.org/gureetk/pages`, which is the repository name Codeberg Pages uses. What's left is the résumé.
 2. **Projects.** Lead each entry with what it does and what came of it. On team projects, say which part was yours, the way FastFahr's "My part" does. Unfinished work gets `<span class="tag">in progress</span>` after its name, as wglink has; take the tag off once there's a release.
 3. **History.** Add jobs, clubs, CTF teams and certifications as they come, newest first.
 4. **Environment.** This is your homelab: the diagram, the entries under it and the table of services. Say what runs and why. Leave out IPs, hostnames, versions, and which services are reachable from the internet. The diagram comes in two drawings, a wide one for desktops and a stacked one for phones. Both live as plain ASCII in `tools/diagram.py`: edit them there, then run `python3 tools/diagram.py` to color them and write them into the page.
@@ -40,7 +40,7 @@ It's plain HTML, CSS and JavaScript. There's no framework, no build step, no dep
    ```
 
    The `qpdf` step is what actually removes the old values; exiftool on its own only hides them, and they can be recovered from the file. The title is what a browser tab shows when someone opens the PDF. Don't use `mat2` on a résumé: by default it turns each page into an image, so the text can't be selected or searched and the links stop working. Its `--lightweight` mode keeps the text but still drops the links.
-7. **SSH randomart.** Run the command below and paste the 11-line box into the `<pre>` in the FILES section. Put the `SHA256:` fingerprint in the `<figcaption>`. If the art contains an `&`, write it as `&amp;`. The spans that color `S` and `E` are optional.
+7. **SSH randomart.** It's filled in for your current key. When you change keys, run the command below and paste the 11-line box into the `<pre>` in the FILES section. Put the `SHA256:` fingerprint in the `<figcaption>`. If the art contains an `&`, write it as `&amp;`. The spans that color `S` and `E` are optional.
 
    ```sh
    ssh-keygen -lv -E sha256 -f ~/.ssh/id_ed25519.pub
