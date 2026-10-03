@@ -14,12 +14,14 @@ It's plain HTML, CSS and JavaScript. There's no framework, no build step, no dep
 │   ├── js/site.js              pager prompt, less keys, help screen, theme toggle
 │   ├── js/cipher.js            the hexdump background and decryption lens
 │   ├── fonts/                  self-hosted woff2 files and their OFL licenses
+│   ├── og.png                  link preview image (1200 × 630)
 │   └── favicon.svg
 ├── .well-known/security.txt    RFC 9116 security contact
 ├── _headers                    security headers for Codeberg Pages
 ├── deploy/Caddyfile            self-hosting with Caddy (automatic HTTPS)
 ├── deploy/nginx.conf           self-hosting with nginx
 ├── tools/diagram.py            redraws the homelab diagram in index.html
+├── tools/og.html               source of the link preview image
 ├── .nojekyll                   stops GitHub Pages from hiding .well-known/
 └── robots.txt
 ```
@@ -48,7 +50,8 @@ It's plain HTML, CSS and JavaScript. There's no framework, no build step, no dep
 
 8. **Hidden phrases.** The lens reveals the strings in `PHRASES` at the top of `assets/js/cipher.js`. Add your own. Just below the list, `SCROLL_SPEED` sets how fast the background scrolls compared with the page: `0` keeps it still, `1` moves it with the text, and the default `0.5` makes it read as sitting behind the page. For visitors who've asked their system for reduced motion, it stays still no matter what.
 9. **Dates.** Update the footer date when you edit the page. Each September, update your year of study in HISTORY. `Expires` in `security.txt` should stay less than a year away.
-10. **Width.** `--frame` in `assets/css/site.css` sets how wide the page gets (1440px). Wider screens center it, and the background still fills the screen. Set it to `100vw` to keep the page pinned left at any width.
+10. **Link preview.** `assets/og.png` is `tools/og.html` at 1200 × 630, and chat apps show it when someone shares the link. If you change your name or tagline, open `tools/og.html` in Firefox, press Ctrl+Shift+M, set 1200 × 630 at 1x, take the screenshot with the camera button and save it over `assets/og.png`. Then shrink it with `pngquant --force --strip --quality 65-80 --ext .png assets/og.png`.
+11. **Width.** `--frame` in `assets/css/site.css` sets how wide the page gets (1440px). Wider screens center it, and the background still fills the screen. Set it to `100vw` to keep the page pinned left at any width.
 
 ## Preview locally
 
