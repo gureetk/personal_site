@@ -21,10 +21,10 @@ WIDE = r"""
                                       |  wireguard
                                       v
  trusted lan    +-- homelab -------------------------------+
- -------------->|  caddy      reverse proxy, ends TLS      |
- split-horizon  |  crowdsec   reads caddy's logs           |
- dns            |  anubis     proof-of-work vs scrapers    |  tailnet
-                |  tailscale  own LXC -> caddy             |<----------
+ -- connects -->|  caddy      reverse proxy, ends TLS      |
+ <-- replies ---|  crowdsec   reads caddy's logs           |
+ split-horizon  |  anubis     proof-of-work vs scrapers    |  tailnet
+ dns            |  tailscale  own LXC -> caddy             |<----------
                 +---------------------+--------------------+ tailnet lock
                                       |
                                       |  wireguard
@@ -45,8 +45,8 @@ NARROW = r"""
  trusted lan         |            tailnet
  split-horizon       |       tailnet lock
  dns                 |                  |
-  |                  |                  |
-  v                  v                  v
+  |  ^               |                  |
+  v  |  replies      v                  v
 +-- homelab -------------------------------+
 |  caddy      reverse proxy, ends TLS      |
 |  crowdsec   reads caddy's logs           |
@@ -62,7 +62,7 @@ NARROW = r"""
 """
 
 SOURCES = ["trusted lan", "internet", "tailnet"]           # where traffic comes from
-LINKS = ["split-horizon", "tailnet lock", "wireguard", "dns"]  # how it travels
+LINKS = ["split-horizon", "tailnet lock", "wireguard", "dns", "connects", "replies"]  # how it travels
 
 LIMITS = {"wide": 73, "narrow": 44}
 
@@ -87,7 +87,7 @@ def colorize(line):
             continue
         before = line[i - 1] if i else " "
         after = line[i + 1] if i + 1 < len(line) else " "
-        if ch in "+|<>":
+        if ch in "+|<>^":
             cls[i] = "dg-frame"
         elif ch == "-" and not (before.isalpha() and after.isalpha()):
             cls[i] = "dg-frame"
