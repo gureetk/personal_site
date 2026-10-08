@@ -42,7 +42,7 @@ It's plain HTML, CSS and JavaScript. There's no framework, no build step, no dep
    ```
 
    The `qpdf` step is what actually removes the old values; exiftool on its own only hides them, and they can be recovered from the file. The title is what a browser tab shows when someone opens the PDF. Don't use `mat2` on a résumé: by default it turns each page into an image, so the text can't be selected or searched and the links stop working. Its `--lightweight` mode keeps the text but still drops the links.
-7. **SSH randomart.** It's filled in for your current key. When you change keys, run the command below and paste the 11-line box into the `<pre>` in the FILES section. Put the `SHA256:` fingerprint in the `<figcaption>`. If the art contains an `&`, write it as `&amp;`. The spans that color `S` and `E` are optional.
+7. **SSH randomart.** FILES shows one drawing per key, labeled by device. When you add or change a key, run the command below on that device and paste the 11-line box into a `<pre>` in FILES, with the device name and the `SHA256:` fingerprint in its `<figcaption>`. If the art contains an `&`, write it as `&amp;`. The spans that color `S` and `E` are optional.
 
    ```sh
    ssh-keygen -lv -E sha256 -f ~/.ssh/id_ed25519.pub

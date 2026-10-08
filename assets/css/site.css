@@ -526,12 +526,17 @@ a:hover { text-decoration-thickness: 2px; }
 .seealso dt { font-weight: 700; color: var(--ink); }
 .seealso dd { font: 400 0.9375rem/1.75 var(--font-mono); }
 
-.randomart {
+.randomarts {
   display: flex;
   flex-wrap: wrap;
-  align-items: flex-end;
-  gap: 0.6rem 1.4rem;
+  gap: 1rem 2rem;
   margin: 0.2rem 0 0;
+}
+
+/* Table layout keeps each caption as wide as its drawing. */
+.randomart {
+  display: table;
+  margin: 0;
 }
 
 .randomart pre {
@@ -545,11 +550,15 @@ a:hover { text-decoration-thickness: 2px; }
 .ra-e { color: var(--amber); font-weight: 700; }
 
 .randomart figcaption {
-  max-width: 17rem;
+  display: table-caption;
+  caption-side: bottom;
+  padding-top: 0.45rem;
   font: 400 0.75rem/1.5 var(--font-mono);
   color: var(--muted);
   overflow-wrap: anywhere;
 }
+
+.randomart figcaption b { display: block; }
 
 .colophon { color: var(--muted); font-size: 0.9375rem; }
 
