@@ -65,8 +65,8 @@
         <p class="whatis"><b>gureet</b> — computer science student who likes systems that stay up and keep secrets</p>
         <p class="status"><span class="led" aria-hidden="true"></span>looking for a security or infrastructure co-op · fall 2027 – winter 2028, open to longer</p>
         <ul class="quick" aria-label="Links">
-          <li><a href="https://codeberg.org/gureetk">codeberg</a></li>
           <li><a href="https://github.com/gureetk">github</a></li>
+          <li><a href="https://codeberg.org/gureetk">codeberg</a></li>
           <li><a href="https://www.linkedin.com/in/gureetk">linkedin</a></li>
           <li><a href="mailto:hello@gureet.ca">email</a></li>
           <!-- Restore with resume.pdf: <li><a href="resume.pdf">résumé</a></li> -->
@@ -103,7 +103,7 @@
           </div>
           <div class="opt" id="opt-free-software">
             <dt>--free-software</dt>
-            <dd>Fedora Linux on the desktop, and tools that can be read, audited and fixed, preferably ones that keep working offline. Most of the code lives on <a href="https://codeberg.org/gureetk">Codeberg</a>.</dd>
+            <dd>Fedora Linux on the desktop, and tools that can be read, audited and fixed, preferably ones that keep working offline. Most of the code lives on <a href="https://github.com/gureetk">GitHub</a>.</dd>
           </div>
           <div class="opt" id="opt-privacy">
             <dt>--privacy</dt>
@@ -230,10 +230,31 @@
       <div class="sh-body">
         <dl class="opts projects">
           <div class="opt">
-            <dt><a href="https://kitae.fromkoyomi.org">kitae</a></dt>
+            <dt><a href="https://remapd.gureet.ca">remapd</a></dt>
             <dd>
-              <p>An offline workout journal for Android, now in beta on iPhone. Plan your split once as named training days, then pick a day and tick off your sets, with a rest timer. No accounts and no internet access, and a backup from either phone restores on the other. The Android app is a fork of LooKeR's <a href="https://codeberg.org/Iamlooker/Kenko">Kenko</a>; the iPhone app is written from scratch in SwiftUI. Part of <a href="https://fromkoyomi.org">Koyomi</a>, my open-source health apps.</p>
-              <p class="meta"><span>kotlin · swiftui · gplv3</span><span class="plinks"><a href="https://kitae.fromkoyomi.org">website</a><a href="https://github.com/koyomi-apps/kitae-android">android</a><a href="https://github.com/koyomi-apps/kitae-ios">ios</a></span></p>
+              <p>A daemon and app that make every button on a Bluetooth TV remote work on Android TV and Google TV, with no root. The daemon, written in C and started over ADB, rewrites a button's entry in the kernel's keymap or presses its key on a virtual remote; the app sets up each button as you press it. After a restart, the app starts the daemon again through the TV's own wireless debugging, signing in with an adb key that never leaves the TV.</p>
+              <p class="meta"><span>c · java · mit</span><span class="plinks"><a href="https://remapd.gureet.ca">website</a><a href="https://github.com/gureetk/remapd">source</a></span></p>
+            </dd>
+          </div>
+          <div class="opt">
+            <dt><a href="https://kasad.gureet.ca">kasad</a></dt>
+            <dd>
+              <p>Offline control for TP-Link Kasa smart plugs that speak the local protocol, over the LAN with no cloud account and no internet. It runs a weekly schedule that catches up after an outage, keeps the plug's clock set, and serves a web app and a JSON API with password sign-in. One Go binary with no third-party dependencies, run by systemd or as a non-root container.</p>
+              <p class="meta"><span>go · systemd · docker · mit</span><span class="plinks"><a href="https://kasad.gureet.ca">website</a><a href="https://github.com/gureetk/kasad">source</a></span></p>
+            </dd>
+          </div>
+          <div class="opt">
+            <dt><a href="https://plasma.gureet.ca">plasma</a><span class="tag">in progress</span></dt>
+            <dd>
+              <p>An IPTV player for Android TV that is also the TV's home screen: press Home and your channel keeps playing behind the guide, movies, series and your apps. It can replace Google TV's home screen from the TV itself through its own ADB client, saves recordings so Jellyfin picks them up, and turns your phone into a remote with nothing to install. It brings no channels of its own, and has no ads, analytics or accounts.</p>
+              <p class="meta"><span>kotlin · compose · gplv3</span><span class="plinks"><a href="https://plasma.gureet.ca">website</a><a href="https://github.com/gureetk/plasma">source</a></span></p>
+            </dd>
+          </div>
+          <div class="opt">
+            <dt><a href="https://kitae.fromkoyomi.org">kamae</a></dt>
+            <dd>
+              <p>A workout journal built around training days: plan your split once, then pick a day and tick off your sets. The iPhone app (SwiftUI) and the Android app (Jetpack Compose) share one Kotlin Multiplatform core for their data and rules, so both store, count and back up the same way, with no accounts and no internet access. Formerly Kitae, it shares its design and backups, but no code, with Kitae for Android, my fork of LooKeR's <a href="https://codeberg.org/Iamlooker/Kenko">Kenko</a>. In beta on both phones, and part of <a href="https://fromkoyomi.org">Koyomi</a>, my open-source health apps.</p>
+              <p class="meta"><span>kotlin · swiftui · compose · gplv3</span><span class="plinks"><a href="https://kitae.fromkoyomi.org">website</a><a href="https://github.com/koyomi-apps/kitae-ios">source</a></span></p>
             </dd>
           </div>
           <div class="opt">
@@ -251,14 +272,14 @@
             </dd>
           </div>
           <div class="opt">
-            <dt><a href="https://codeberg.org/gureetk/wglink">wglink</a><span class="tag">in progress</span></dt>
+            <dt><a href="https://github.com/gureetk/wglink">wglink</a><span class="tag">in progress</span></dt>
             <dd>
               <p>A lightweight tool for creating, linking and managing WireGuard tunnels between machines on a LAN, so nothing else on the network can read their traffic. It can work across the internet too.</p>
-              <p class="meta"><span>go · wireguard · cli + tui</span><span class="plinks"><a href="https://codeberg.org/gureetk/wglink">source</a></span></p>
+              <p class="meta"><span>go · wireguard · cli + tui</span><span class="plinks"><a href="https://github.com/gureetk/wglink">source</a></span></p>
             </dd>
           </div>
         </dl>
-        <p class="more">More at <a href="https://codeberg.org/gureetk">codeberg.org/gureetk</a> and <a href="https://github.com/gureetk">github.com/gureetk</a>.</p>
+        <p class="more">More at <a href="https://github.com/gureetk">github.com/gureetk</a>.</p>
       </div>
     </section>
 
@@ -286,9 +307,9 @@
           </div>
           -->
           <div>
-            <dt><a href="https://codeberg.org/gureetk.keys">~/.ssh/id_ed25519.pub</a></dt>
+            <dt><a href="https://github.com/gureetk.keys">~/.ssh/id_ed25519.pub</a></dt>
             <dd>
-              <p>SSH public keys, one per device, also at codeberg.org/gureetk.keys and github.com/gureetk.keys. They also sign commits, so those show as Verified on both. Their fingerprints, drawn the way <code>ssh-keygen</code> draws them:</p>
+              <p>SSH public keys, one per device, also at github.com/gureetk.keys and codeberg.org/gureetk.keys. They also sign commits, so those show as Verified on both. Their fingerprints, drawn the way <code>ssh-keygen</code> draws them:</p>
               <!-- From: ssh-keygen -lv -E sha256 -f ~/.ssh/id_ed25519.pub, run on each device -->
               <div class="randomarts">
                 <figure class="randomart">
@@ -356,7 +377,7 @@
       <h2 id="h-author">AUTHOR</h2>
       <div class="sh-body prose">
         <p>Written by Gureet Kharod.</p>
-        <p class="colophon">This page loads no trackers, sets no cookies and makes no third-party requests. It reads fine with JavaScript turned off, including in Tor Browser's Safest mode. Set in Iosevka and Atkinson Hyperlegible, both free fonts. Source at <a href="https://codeberg.org/gureetk/pages">codeberg.org/gureetk/pages</a>.</p>
+        <p class="colophon">This page loads no trackers, sets no cookies and makes no third-party requests. It reads fine with JavaScript turned off, including in Tor Browser's Safest mode. Set in Iosevka and Atkinson Hyperlegible, both free fonts. Source at <a href="https://github.com/gureetk/personal_site">github.com/gureetk/personal_site</a>.</p>
       </div>
     </section>
   </main>
