@@ -45,12 +45,12 @@
     "the pi breaks the tie",
     "passkeys, not passwords",
     "degoogled: photos, drive, search, push",
-    "tailnet lock: enabled",
+    "a tunnel inside a tunnel",
     "homelab v3, now with quorum",
     "ups: online",
     "sudo dnf upgrade --refresh",
     "offline first",
-    "anubis is weighing your soul",
+    "nothing public, vpn only",
     "wg-quick up wg0",
   ];
 

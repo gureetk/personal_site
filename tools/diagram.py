@@ -10,22 +10,23 @@ import sys
 from pathlib import Path
 
 WIDE = r"""
-                                  internet
+                               remote devices
                                       |
+                                      |  inner wireguard
                                       v
                 +-- vps -----------------------------------+
-                |  haproxy    passes TLS through unopened  |
-                |  crowdsec   bouncer: blocks at the edge  |
+                |  wireguard  outer tunnel to the homelab  |
+                |             no keys to the inner tunnel  |
                 +---------------------+--------------------+
                                       |
-                                      |  wireguard
+                                      |  outer wireguard
+                                      |  (inner one inside)
                                       v
  trusted lan    +-- homelab -------------------------------+
- -- connects -->|  caddy      reverse proxy, ends TLS      |
- <-- replies ---|  crowdsec   reads caddy's logs           |
- split-horizon  |  anubis     proof-of-work vs scrapers    |  tailnet
- dns            |  tailscale  own LXC -> caddy             |<----------
-                +---------------------+--------------------+ tailnet lock
+ -- connects -->|  caddy      reverse proxy, access rules  |
+ <-- replies ---|  firewall   limits what devices reach    |
+ split-horizon  |  wireguard  own LXC, ends inner tunnels  |
+ dns            +---------------------+--------------------+
                                       |
                                       |  wireguard
                                       v
@@ -34,24 +35,23 @@ WIDE = r"""
 """
 
 NARROW = r"""
-                 internet
+              remote devices
                      |
+                     |  inner wireguard
                      v
 +-- vps -----------------------------------+
-|  haproxy    passes TLS through unopened  |
-|  crowdsec   bouncer: blocks at the edge  |
-|  wireguard  tunnel home to caddy         |
+|  wireguard  outer tunnel to the homelab  |
+|             no keys to the inner tunnel  |
 +--------------------+---------------------+
- trusted lan         |            tailnet
- split-horizon       |       tailnet lock
- dns                 |                  |
-  |  ^               |                  |
-  v  |  replies      v                  v
+ trusted lan         |
+ split-horizon       |  outer wireguard
+ dns                 |  (inner one inside)
+  |  ^               |
+  v  |  replies      v
 +-- homelab -------------------------------+
-|  caddy      reverse proxy, ends TLS      |
-|  crowdsec   reads caddy's logs           |
-|  anubis     proof-of-work vs scrapers    |
-|  tailscale  own LXC -> caddy             |
+|  caddy      reverse proxy, access rules  |
+|  firewall   limits what devices reach    |
+|  wireguard  own LXC, ends inner tunnels  |
 +--------------------+---------------------+
                      |
                      |  wireguard
@@ -61,8 +61,9 @@ NARROW = r"""
   pocket-id · stirling-pdf · ...
 """
 
-SOURCES = ["trusted lan", "internet", "tailnet"]           # where traffic comes from
-LINKS = ["split-horizon", "tailnet lock", "wireguard", "dns", "connects", "replies"]  # how it travels
+SOURCES = ["trusted lan", "remote devices"]                 # where traffic comes from
+LINKS = ["split-horizon", "inner wireguard", "outer wireguard", "wireguard", "dns",
+         "connects", "replies"]                             # how it travels
 
 LIMITS = {"wide": 73, "narrow": 44}
 
@@ -76,12 +77,12 @@ def colorize(line):
 
     for m in re.finditer(r"\+-- ([a-z][\w-]*) ", line):          # box titles
         mark(m.start(1), m.end(1), "dg-box")
+    for m in re.finditer(r"\|  ([a-z][\w-]*)(?= {2,}\S[^|]*\|)", line):  # first word in a box row
+        mark(m.start(1), m.end(1), "dg-key")
     phrases = [(p, "dg-box") for p in SOURCES] + [(p, "dg-wire") for p in LINKS]
     for phrase, name in sorted(phrases, key=lambda x: -len(x[0])):
         for m in re.finditer(r"(?<![\w-])" + re.escape(phrase) + r"(?![\w-])", line):
             mark(m.start(), m.end(), name)
-    for m in re.finditer(r"\|  ([a-z][\w-]*)", line):              # first word in a box row
-        mark(m.start(1), m.end(1), "dg-key")
     for i, ch in enumerate(line):                                   # lines and arrows
         if cls[i] is not None:
             continue
