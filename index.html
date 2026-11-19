@@ -63,7 +63,7 @@
       <div class="sh-body">
         <h1 class="name"><span class="sr-only">Gureet Kharod</span><span class="name-text" aria-hidden="true" data-scramble>Gureet Kharod</span><span class="cursor" aria-hidden="true"></span></h1>
         <p class="whatis"><b>gureet</b> — computer science student who likes systems that stay up and keep secrets</p>
-        <p class="status"><span class="led" aria-hidden="true"></span>looking for a security or infrastructure co-op · fall 2027 – winter 2028, open to longer</p>
+        <p class="status"><span class="led" aria-hidden="true"></span>looking for a co-op · summer 2027 onwards, open to 4–16 months</p>
         <ul class="quick" aria-label="Links">
           <li><a href="https://github.com/gureetk">github</a></li>
           <li><a href="https://codeberg.org/gureetk">codeberg</a></li>
@@ -230,6 +230,13 @@
       <div class="sh-body">
         <dl class="opts projects">
           <div class="opt">
+            <dt><a href="https://wglink.gureet.ca">wglink</a></dt>
+            <dd>
+              <p>WireGuard between Linux machines from one inventory file: list them, preview the change with <code>wglink plan</code>, make it with <code>wglink apply</code>, and check every tunnel with <code>wglink status</code>. One static binary with no agent, no coordination server and no account. It reaches machines over SSH, <code>docker exec</code> or Proxmox, builds full-mesh or hub-and-spoke networks, and leaves plain <code>wg-quick</code> configs behind. Private keys are made on the machines that use them and never leave.</p>
+              <p class="meta"><span>go · wireguard · cli + tui · mit</span><span class="plinks"><a href="https://wglink.gureet.ca">website</a><a href="https://github.com/gureetk/wglink">source</a></span></p>
+            </dd>
+          </div>
+          <div class="opt">
             <dt><a href="https://remapd.gureet.ca">remapd</a></dt>
             <dd>
               <p>A daemon and app that make every button on a Bluetooth TV remote work on Android TV and Google TV, with no root. The daemon, written in C and started over ADB, rewrites a button's entry in the kernel's keymap or presses its key on a virtual remote; the app sets up each button as you press it. After a restart, the app starts the daemon again through the TV's own wireless debugging, signing in with an adb key that never leaves the TV.</p>
@@ -251,10 +258,10 @@
             </dd>
           </div>
           <div class="opt">
-            <dt><a href="https://kitae.fromkoyomi.org">kamae</a></dt>
+            <dt><a href="https://kamae.fromkoyomi.org">kamae</a></dt>
             <dd>
               <p>A workout journal built around training days: plan your split once, then pick a day and tick off your sets. The iPhone app (SwiftUI) and the Android app (Jetpack Compose) share one Kotlin Multiplatform core for their data and rules, so both store, count and back up the same way, with no accounts and no internet access. Formerly Kitae, it shares its design and backups, but no code, with Kitae for Android, my fork of LooKeR's <a href="https://codeberg.org/Iamlooker/Kenko">Kenko</a>. In beta on both phones, and part of <a href="https://fromkoyomi.org">Koyomi</a>, my open-source health apps.</p>
-              <p class="meta"><span>kotlin · swiftui · compose · gplv3</span><span class="plinks"><a href="https://kitae.fromkoyomi.org">website</a><a href="https://github.com/koyomi-apps/kitae-ios">source</a></span></p>
+              <p class="meta"><span>kotlin · swiftui · compose · gplv3</span><span class="plinks"><a href="https://kamae.fromkoyomi.org">website</a><a href="https://github.com/koyomi-apps/kamae">source</a></span></p>
             </dd>
           </div>
           <div class="opt">
@@ -269,13 +276,6 @@
                 <li>Prepared statements for every query in the user and reset code, and profile edits that can only touch the signed-in user's own account.</li>
               </ul>
               <p class="meta"><span>react · php · mysql · team of 4</span><span class="plinks"><a href="https://github.com/arkelziko/fast-fahr">source</a><a href="https://youtu.be/W8mkPZq8NsY">demo video</a></span></p>
-            </dd>
-          </div>
-          <div class="opt">
-            <dt><a href="https://github.com/gureetk/wglink">wglink</a><span class="tag">in progress</span></dt>
-            <dd>
-              <p>A lightweight tool for creating, linking and managing WireGuard tunnels between machines on a LAN, so nothing else on the network can read their traffic. It can work across the internet too.</p>
-              <p class="meta"><span>go · wireguard · cli + tui</span><span class="plinks"><a href="https://github.com/gureetk/wglink">source</a></span></p>
             </dd>
           </div>
         </dl>
